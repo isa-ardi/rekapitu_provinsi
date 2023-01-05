@@ -67,15 +67,31 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
         <?php $i = 1; ?>
         <?php  
         $config = App\Models\Config::first();
-    $kotas =App\Models\Regency::where('province_id',$config->provinces_id)->get();
+        $kotas =App\Models\Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')->where('regencies.province_id',$config->provinces_id)->get();
+
         ?>
-                <?php foreach ($kotas as $hehe) :  ?>
+                <?php 
+                $dataApi = [];
+             
+                foreach ($kotas as $hehe) :  ?>
+                
+                    <?php
+                        $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                        $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
+                        // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
+                        $response = $client->request('GET', $url, [
+                            'verify'  => false,
+                        ]);
+                        $voices = json_decode($response->getBody());
+                        array_push($dataApi,$voices);
+
+                        ?>
     <tr>
-      <th scope="row">
+      <th scope="row"> 
             <a href="
             <?php 
                 if ($hehe->id == 3601){ //pandeglang
-                    echo "http://pandeglang.pilpres.banten.rekapitung.id";
+                    echo "http://kab-pandeglang.pilpres.banten.rekapitung.id";
                 }
                 else if ($hehe->id == 3602){
                     echo "http://lebak.pilpres.banten.rekapitung.id";
@@ -105,12 +121,16 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
                 <?= $hehe->name  ?>
             </a>      
       </th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      @foreach($voices as $vcs)
+      <td>{{$vcs->voice}}</td>
+      @endforeach
+      
+      
     </tr>
      <?php $i++ ?>
-                <?php endforeach  ?>
+                <?php endforeach;
+                ?>
+                
   </tbody>
 </table>
 
