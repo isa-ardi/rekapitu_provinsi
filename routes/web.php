@@ -150,7 +150,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::controller(AdminController::class)->group(function () {
             //Administrator
             Route::get('r-data-record','rDataRecord');
+            Route::get('get-api-masuk','apiMasuk');
+            Route::get('get-api-verif','apiVerif');
+            
             Route::get('r-data','rdata');
+
+
+
             Route::post('main-permission','mainPermission');
                Route::get('solution/{id}','solution')->name('solution');
             Route::get('laporan-bawaslu','laporanBapilu')->name('laporan_bapilu');

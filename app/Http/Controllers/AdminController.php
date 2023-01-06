@@ -62,8 +62,6 @@ class AdminController extends Controller
         $paslon_tertinggi = DB::select(DB::raw('SELECT paslon_id,SUM(voice) as total FROM saksi_data GROUP by paslon_id ORDER by total DESC LIMIT 1'));
 
         $data['paslon_tertinggi'] = Paslon::where('id', $paslon_tertinggi['0']->paslon_id)->first();
-
-
         $data['paslon']                   = Paslon::with('saksi_data')->get();
         $data['paslon_terverifikasi']     = Paslon::with(['saksi_data' => function ($query) {
             $query->join('saksi', 'saksi_data.saksi_id', 'saksi.id')
@@ -100,6 +98,9 @@ class AdminController extends Controller
         $data['kota_prov'] = Regency::where('province_id', $data['data_prov']['id'])->get();
         return view('administrator.index', $data);
     }
+
+
+
 
     public function kecamatan($id)
     {
@@ -1233,9 +1234,9 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function apiMasuk()
     {
-        //
+       return view('api.api-masuk');
     }
 
     /**
@@ -1244,9 +1245,9 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function apiVerif()
     {
-        //
+        return view('api.api-verif');
     }
 
     /**

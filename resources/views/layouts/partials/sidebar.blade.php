@@ -52,8 +52,8 @@ $tps = 2963;
 
                 <?php
                     $props = Province::where('id',$kota['province_id'])->first();
-                    $hehes = Province::get();
-                    $cityProp = Regency::where('province_id',$kota['province_id'])->get();
+                    $hehes = Province::join('province_domains','province_domains.province_id','=','provinces.id')->get();
+                    $cityProp = Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')->where('regencies.province_id',$kota['province_id'])->get();
 
                 ?>
 
@@ -63,23 +63,15 @@ $tps = 2963;
                             class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">PROVINSI
                             {{$props->name}}</span><i class="angle fa fa-angle-right"></i></a>
                     <ul class="slide-menu open" style="display:block">
-                        <li><a href="http://pilpres.banten.rekapitung.id/index"
-                                class="slide-item fw-bolder text-danger">DASHBOARD {{$props->name}}</a></li>
-                        <li><a href="http://pandeglang.pilpres.banten.rekapitung.id/login" class="slide-item">KABUPATEN
-                                PANDEGLANG</a></li>
-                        <li><a href="http://lebak.pilpres.banten.rekapitung.id/login" class="slide-item">KABUPATEN LEBAK</a>
+
+                    @foreach( $cityProp as $kots)
+                    <li>
+                        <a href="http://{{$kots->domain}}" class="slide-item">
+                            {{$kots->name}}
+                            </a>
                         </li>
-                        <li><a href="http://kab-tanggerang.pilpres.banten.rekapitung.id/login" class="slide-item">KABUPATEN
-                                TANGERANG</a></li>
-                        <li><a href="http://kab-serang.pilpres.banten.rekapitung.id/login" class="slide-item">KABUPATEN
-                                SERANG</a></li>
-                        <li><a href="http://tanggerang.pilpres.banten.rekapitung.id/login" class="slide-item">KOTA
-                                TANGERANG</a></li>
-                        <li><a href="http://cilegon.pilpres.banten.rekapitung.id/login" class="slide-item">KOTA CILEGON</a>
-                        </li>
-                        <li><a href="http://serang.pilpres.banten.rekapitung.id/login" class="slide-item">KOTA SERANG</a></li>
-                        <li><a href="http://tangsel.pilpres.banten.rekapitung.id/login" class="slide-item">KOTA TANGERANG
-                                SELATAN</a></li>
+                    @endforeach
+                      
                     </ul>
                 </li>
                 <li class="slide is-expanded">
@@ -91,113 +83,7 @@ $tps = 2963;
                                 class="slide-item fw-bolder text-danger">DASHBOARD NASIONAL</a></li>
                         <?php 
                       foreach($hehes as $hehe): ?>
-                        <li><a href="
-                        <?php
-                                        if ($hehe->id == 36){
-                                            echo "http://pilpres.banten.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 31){
-                                            echo "http://pilpres.jakarta.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 32){
-                                            echo "http://pilpres.jabar.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 13){
-                                            echo "http://pilpres.sumbar.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 51){
-                                            echo "http://pilpres.bali.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 11){
-                                            echo "http://pilpres.aceh.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 12){
-                                            echo "http://pilpres.sumut.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 14){
-                                            echo "http://pilpres.riau.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 15){
-                                            echo "http://pilpres.jambi.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 17){
-                                            echo "http://pilpres.bengkulu.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 16){
-                                            echo "http://pilpres.sumsel.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 18){
-                                            echo "http://pilpres.lampung.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 19){
-                                            echo "http://pilpres.babel.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 21){
-                                            echo "http://pilpres.kepri.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 34){
-                                            echo "http://pilpres.jogja.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 33){
-                                            echo "http://pilpres.jateng.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 35){
-                                            echo "http://pilpres.jatim.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 52){
-                                            echo "http://pilpres.ntb.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 53){
-                                            echo "http://pilpres.ntt.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 61){
-                                            echo "http://pilpres.kalbar.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 62){
-                                            echo "http://pilpres.kalteng.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 63){
-                                            echo "http://pilpres.kalsel.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 64){
-                                            echo "http://pilpres.kaltim.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 65){
-                                            echo "http://pilpres.kalut.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 71){
-                                            echo "http://pilpres.sulut.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 72){
-                                            echo "http://pilpres.sulteng.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 73){
-                                            echo "http://pilpres.sulsel.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 74){
-                                            echo "http://pilpres.sultra.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 75){
-                                            echo "http://pilpres.gorontalo.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 76){
-                                            echo "http://pilpres.sulbar.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 81){
-                                            echo "http://pilpres.maluku.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 82){
-                                            echo "http://pilpres.malut.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 91){
-                                            echo "http://pilpres.pabar.rekapitung.id";
-                                        }
-                                        else if ($hehe->id == 94){
-                                            echo "http://pilpres.papua.rekapitung.id";
-                                        }
-                                    
-                                        else { 
-                                          }?> " class="slide-item">
+                        <li><a href="https://{{$hehe->domain}}" class="slide-item">
                             
                             {{$hehe->name}}
                         </a></li>

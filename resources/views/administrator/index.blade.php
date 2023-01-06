@@ -24,7 +24,7 @@ $tps = Tps::count();
 
 
 <?php $i = 1; ?>
-        <?php  
+<?php  
         $config = App\Models\Config::first();
         $kotas =App\Models\Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')->where('regencies.province_id',$config->provinces_id)->get();
 
@@ -156,7 +156,7 @@ $tps = Tps::count();
                         <div class="container" style="margin-left: 3%; margin-top: 10%;">
                             <div class="text-center fs-3 mb-3 fw-bold">SUARA MASUK</div>
                             <div class="text-center">Progress {{substr($realcount,0,5)}}% dari 100%</div>
-                            <div id="chart-pie" class="chartsh h-100 w-100"></div>
+                            <div id="chart-all" class="chartsh h-100 w-100"></div>
                         </div>
                     </div>
                     <div class="col-xxl-6">
@@ -333,31 +333,9 @@ endforeach ?>
                             @endforeach
                         </tr>
                     </thead>
-                    <tbody>
-                       
-   <?php  foreach ($kotas as $hehe) :  ?>
-            <?php
-                
-                $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
-                $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
-                // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
-                $response = $client->request('GET', $url, [
-                    'verify'  => false,
-                ]);
-                $voices = json_decode($response->getBody());
-                array_push($ApiMasuk,$voices);
-                
-                ?>
-    <tr onclick="window.open(`https://{{$hehe->domain}}`)">
-        <td>{{$hehe->name}}</td>
-        @foreach($voices as $vcs)
-      <td>{{$vcs->voice}}</td>
-      @endforeach
-     
-    </tr>
-    
-    <?php  endforeach ?>
-    
+
+                    <tbody  id="body-masuk">
+
 </tbody>
 
                 </table>
@@ -379,41 +357,36 @@ endforeach ?>
                             {{ $item['deputy_candidate']}}</th>
                         @endforeach
                     </thead>
-                    <tbody>
-                     
-    <?php 
-    $ApiVerifi = [];
-    
-    foreach ($kotas as $hehe) :  ?>
+                    <tbody  id="body-verif">
 
-        <?php
-                        $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
-                        $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_terverifikasi";
-                        // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
-                        $response = $client->request('GET', $url, [
-                            'verify'  => false,
-                        ]);
-                        $voices = json_decode($response->getBody());
-                        array_push( $ApiVerifi,$voices);
-
-                        ?>
-
-
-    <tr onclick="window.open(`https://{{$hehe->domain}}`)">
-        <td>{{$hehe->name}}</td>
-       @foreach($voices as $vcs)
-      <td>{{$vcs->voice}}</td>
-      @endforeach
-      
-    </tr>
-    
-    <?php  endforeach ?>
                     </tbody>
+                   
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+    setTimeout(function(){
+        $.ajax({
+            url:"{{url('administrator/get-api-masuk')}}",
+            type:"get",
+            success:(res)=>{
+                $('#body-masuk').html(res);
+            }
+        });
+        $.ajax({
+            url:"{{url('administrator/get-api-verif')}}",
+            type:"get",
+            success:(res)=>{
+                $('#body-verif').html(res);
+            }
+        });
+    },1000);
+
+</script>
 
 <div class="card">
     <div class="card-header">
