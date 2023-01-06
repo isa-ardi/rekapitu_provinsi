@@ -16,11 +16,45 @@ use Illuminate\Support\Facades\DB;
 
 $config = Config::all()->first();
 $regency = District::where('regency_id', $config['regencies_id'])->get();
+$provinsi = Province::where('id', $config['provinces_id'])->first();
 $kota = Regency::where('id', $config['regencies_id'])->first();
 $dpt = District::where('regency_id', $config['regencies_id'])->sum('dpt');
 $tps = Tps::count();
 ?>
 
+
+<?php $i = 1; ?>
+        <?php  
+        $config = App\Models\Config::first();
+        $kotas =App\Models\Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')->where('regencies.province_id',$config->provinces_id)->get();
+
+        ?>
+                <?php 
+                $ApiMasuk = [];
+                $ApiVerif = [];
+             
+                foreach ($kotas as $hehe) :  ?>
+                
+                    <?php
+                        $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                        $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
+                        // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
+                        $response = $client->request('GET', $url, [
+                            'verify'  => false,
+                        ]);
+                        $voices = json_decode($response->getBody());
+                        array_push($ApiMasuk,$voices);
+
+                        $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                        $url = "https://".$hehe->domain."/api/public/get-voice?jenis=terverifikasi";
+                        // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
+                        $response = $client->request('GET', $url, [
+                            'verify'  => false,
+                        ]);
+                        $voices = json_decode($response->getBody());
+                        array_push($ApiVerif,$voices);
+                    endforeach;
+                     ?>
 <style>
     .open-desktop {
         display: block;
@@ -70,7 +104,7 @@ $tps = Tps::count();
                 </h1>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">BANTEN
+                    <li class="breadcrumb-item active" aria-current="page">{{$provinsi->name}}
                         <!-- Kota -->
                     </li>
                 </ol>
@@ -126,7 +160,25 @@ $tps = Tps::count();
                         </div>
                     </div>
                     <div class="col-xxl-6">
-                        <?php $i = 1; 
+                    <?php
+                                $i = 1;
+                                $paslonApi = [];
+                                foreach($ApiMasuk as $past){
+                                    $voice = 0;
+                                    for($j = 0;$j<count($past); $j++){
+                                        $paslonApi['namaPas'.$j] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
+                                        $voice  += $past[$j]->voice;
+                                        $paslonApi['color'.$j] = $past[$j]->color;
+                                        $paslonApi['voice'.$j] =  $past[$j]->voice;
+                                    }
+                                    $i++;
+                                    $voice = 0;
+                                    }
+
+                                ?>
+                        <?php $i = 0; 
+                        ?>
+                        <?php $k = 1; 
                         ?>
                         @foreach ($paslon as $pas)
                         <div class="row mt-2">
@@ -136,28 +188,23 @@ $tps = Tps::count();
                                         <div class="row me-auto">
                                             <div class="col-4">
                                                 <div class="counter-icon box-shadow-secondary brround candidate-name text-white "
-                                                    style="margin-bottom: 0; background-color: {{$pas->color}};">
-                                                    {{$i++}}
+                                                    style="margin-bottom: 0; background-color: {{ $paslonApi['color'.$i]}};">
+                                                 {{$k}}
                                                 </div>
                                             </div>
                                             <div class="col me-auto">
                                                 <h6 class="">{{$pas->candidate}} </h6>
                                                 <h6 class="">{{$pas->deputy_candidate}} </h6>
-                                                <?php
-                                                $voice = 0;
-                                                ?>
-                                                @foreach ($pas->saksi_data as $dataTps)
-                                                <?php
-                                                $voice += $dataTps->voice;
-                                                ?>
-                                                @endforeach
-                                                <h3 class="mb-2 number-font">{{($pas->id == 0)?0:0 }} suara</h3>
+                                              
+                                                <h3 class="mb-2 number-font">{{$paslonApi['voice'.$i]}} suara</h3>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                <?php  $k++ ?>
+                <?php  $i++ ?>
                         @endforeach
                     </div>
                 </div>
@@ -182,7 +229,27 @@ $tps = Tps::count();
                         </div>
                     </div>
                     <div class="col-xxl-6">
-                        <?php $i = 1; ?>
+
+                    <?php
+                                $i = 1;
+                                $paslonApiVerif = [];
+                                foreach($ApiVerif as $pastverif){
+                                    $voice = 0;
+                                    for($j = 0;$j<count($pastverif); $j++){
+                                        $paslonApiVerif['namaPas'.$j] = $pastverif[$j]->candidate.' | '.$pastverif[$j]->deputy_candidate;
+                                        $voice  += $pastverif[$j]->voice;
+                                        $paslonApiVerif['color'.$j] = $pastverif[$j]->color;
+                                        $paslonApiVerif['voice'.$j] =  $pastverif[$j]->voice;
+                                    }
+                                    $i++;
+                                    $voice = 0;
+                                    }
+
+                                ?>
+                    <?php $i = 0; 
+                        ?>
+                        <?php $k = 1; 
+                        ?>
                         @foreach ($paslon_terverifikasi as $pas)
                         <div class="row mt-2">
                             <div class="col-lg col-md col-sm col-xl mb-3">
@@ -190,29 +257,24 @@ $tps = Tps::count();
                                     <div class="card-body">
                                         <div class="row me-auto">
                                             <div class="col-4">
-                                                <div class="counter-icon box-shadow-secondary brround candidate-name text-white ms-auto"
-                                                    style="margin-bottom: 0; background-color: {{$pas->color}};">
-                                                    {{$i++}}
+                                            <div class="counter-icon box-shadow-secondary brround candidate-name text-white "
+                                                    style="margin-bottom: 0; background-color: {{ $paslonApiVerif['color'.$i]}};">
+                                                 {{$k}}
                                                 </div>
                                             </div>
                                             <div class="col me-auto">
-                                                <h6 class="">{{$pas->candidate}} </h6>
+                                            <h6 class="">{{$pas->candidate}} </h6>
                                                 <h6 class="">{{$pas->deputy_candidate}} </h6>
-                                                <?php
-                                                $voice = 0;
-                                                ?>
-                                                @foreach ($pas->saksi_data as $dataTps)
-                                                <?php
-                                                $voice += $dataTps->voice;
-                                                ?>
-                                                @endforeach
-                                                <h3 class="mb-2 number-font">{{($pas->id == 0)?0:0 }} suara</h3>
+                                              
+                                                <h3 class="mb-2 number-font">{{$paslonApiVerif['voice'.$i]}} suara</h3>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                             <?php  $k++ ?>
+                <?php  $i++ ?>
                         @endforeach
                     </div>
                 </div>
@@ -228,102 +290,28 @@ $tps = Tps::count();
     </div>
     <div class="card-body">
         <div class="row">
+
+
+        <?php $i = 1; ?>
+            <?php 
+                foreach ($kotas as $hehe) :  ?>
             <div class="col-lg-3">
                 <div class="card text-center">
                     <div class="card-header bg-primary">
-                        <div class="card-title text-white">Kab. Pandeglang</div>
+                        <div class="card-title text-white"><a href="https://{{$hehe->domain}}">{{ $hehe->name}}</a></div>
                     </div>
                     <div class="card-body">
                         <div class="container">
-                            <div id="chart-1" class="chartsh h-100 w-100"></div>
+                            <div id="chart-{{$i}}" class="chartsh h-100 w-100"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white">Kab. Lebak</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-2" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white">Kab. Tangerang</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-3" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white">Kab. Serang</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-4" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white">Kota Tangerang</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-5" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white">Kota Cilegon</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-6" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white">Kota Serang</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-7" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white">Kota Tangerang Selatan</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-8" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <?php 
+
+$i++;
+endforeach ?>
+       
         </div>
     </div>
 </div>
@@ -346,73 +334,32 @@ $tps = Tps::count();
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- @foreach ($kec as $item)
-    <tr onclick='check("{{Crypt::encrypt($item->id)}}")'>
-        <td>{{$item['name']}}</td>
-        @foreach ($paslon as $cd)
-        <?php $saksi_dataa = SaksiData::join('saksi', 'saksi.id', '=', 'saksi_data.saksi_id')->where('paslon_id', $cd['id'])->where('saksi_data.district_id', $item['id'])->sum('voice'); ?>
-        <td>{{$saksi_dataa}}</td>
-        @endforeach
+                       
+   <?php  foreach ($kotas as $hehe) :  ?>
+            <?php
+                
+                $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
+                // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
+                $response = $client->request('GET', $url, [
+                    'verify'  => false,
+                ]);
+                $voices = json_decode($response->getBody());
+                array_push($ApiMasuk,$voices);
+                
+                ?>
+    <tr onclick="window.open(`https://{{$hehe->domain}}`)">
+        <td>{{$hehe->name}}</td>
+        @foreach($voices as $vcs)
+      <td>{{$vcs->voice}}</td>
+      @endforeach
+     
     </tr>
-    @endforeach -->
-                        <tr onclick="window.open(`https://pandeglang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kab. Pandeglang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+    
+    <?php  endforeach ?>
+    
+</tbody>
 
-                        <tr onclick="window.open(`https://lebak.pilpres.banten.rekapitung.id/`)">
-                            <td>Kab. Lebak</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://kab-tanggerang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kab. Tangerang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://kab-serang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kab. Serang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://tanggerang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kota Tangerang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://cilegon.pilpres.banten.rekapitung.id/`)">
-                            <td>Kota Cilegon</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://serang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kota Serang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://tangsel.pilpres.banten.rekapitung.id/`)">
-                            <td>Kota Tangerang Selatan</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-
-
-                    <script>
-                        let check = function (id) {
-                            window.location = `public/kecamatan/${id}`;
-                        }
-
-                    </script>
                 </table>
             </div>
         </div>
@@ -433,64 +380,34 @@ $tps = Tps::count();
                         @endforeach
                     </thead>
                     <tbody>
-                        <!-- @foreach ($kec as $item)
-    <tr onclick='check("{{Crypt::encrypt($item->id)}}")'>
-        <td>{{$item['name']}}</td>
-        @foreach ($paslon as $cd)
-        <?php $saksi_dataa = SaksiData::join('saksi', 'saksi.id', '=', 'saksi_data.saksi_id')->where('paslon_id', $cd['id'])->where('saksi_data.district_id', $item['id'])->sum('voice'); ?>
-        <td>{{$saksi_dataa}}</td>
-        @endforeach
-    </tr>
-    @endforeach -->
-                        <tr onclick="window.open(`https://pandeglang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kab. Pandeglang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                     
+    <?php 
+    $ApiVerifi = [];
+    
+    foreach ($kotas as $hehe) :  ?>
 
-                        <tr onclick="window.open(`https://lebak.pilpres.banten.rekapitung.id/`)">
-                            <td>Kab. Lebak</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://kab-tanggerang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kab. Tangerang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://kab-serang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kab. Serang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://tanggerang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kota Tangerang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://cilegon.pilpres.banten.rekapitung.id/`)">
-                            <td>Kota Cilegon</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://serang.pilpres.banten.rekapitung.id/`)">
-                            <td>Kota Serang</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr onclick="window.open(`https://tangsel.pilpres.banten.rekapitung.id/`)">
-                            <td>Kota Tangerang Selatan</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+        <?php
+                        $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                        $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_terverifikasi";
+                        // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
+                        $response = $client->request('GET', $url, [
+                            'verify'  => false,
+                        ]);
+                        $voices = json_decode($response->getBody());
+                        array_push( $ApiVerifi,$voices);
+
+                        ?>
+
+
+    <tr onclick="window.open(`https://{{$hehe->domain}}`)">
+        <td>{{$hehe->name}}</td>
+       @foreach($voices as $vcs)
+      <td>{{$vcs->voice}}</td>
+      @endforeach
+      
+    </tr>
+    
+    <?php  endforeach ?>
                     </tbody>
                 </table>
             </div>

@@ -108,103 +108,27 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
      <div class="card w-100 text-center py-1 mt-4 fs-5" style="font-weight: bold; background: #ff022d; color: #fff">
                 Hasil Perhitungan Tingkat Kabupaten/Kota
             </div>
+           
+            <?php $i = 1; ?>
+            <?php 
+                foreach ($kotas as $hehe) :  ?>
+            <div class="col-lg-3">
+                <div class="card text-center">
+                    <div class="card-header bg-primary">
+                        <div class="card-title text-white"><a href="https://{{$hehe->domain}}">{{ $hehe->name}}</a></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div id="chart-{{$i}}" class="chartsh h-100 w-100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://pandeglang.pilpres.banten.rekapitung.id/ceksetup?check=1">Kab. Pandeglang</a></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-1" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://lebak.pilpres.banten.rekapitung.id/ceksetup?check=1">Kab. Lebak</a></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-2" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://kab-tanggerang.pilpres.banten.rekapitung.id/ceksetup?check=1">Kab. Tangerang</a></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-3" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://kab-serang.pilpres.banten.rekapitung.id/ceksetup?check=1">Kab. Serang</a></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-4" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://tanggerang.pilpres.banten.rekapitung.id/ceksetup?check=1">Kota Tangerang</a></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-5" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://cilegon.pilpres.banten.rekapitung.id/ceksetup?check=1">Kota Cilegon</a></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-6" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://serang.pilpres.banten.rekapitung.id/ceksetup?check=1">Kota Serang</a></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-7" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://tangsel.pilpres.banten.rekapitung.id/ceksetup?check=1">Kota Tangerang Selatan</a></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-8" class="chartsh h-100 w-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <?php 
+
+$i++;
+endforeach ?>
         </div>
     </div>
 </div>
