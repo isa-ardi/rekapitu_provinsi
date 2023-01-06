@@ -53,8 +53,8 @@ $tps = Tps::count();
                         ]);
                         $voices = json_decode($response->getBody());
                         array_push($ApiVerif,$voices);
-                    endforeach;
-                     ?>
+                endforeach;
+        ?>
 <style>
     .open-desktop {
         display: block;
@@ -427,7 +427,29 @@ endforeach ?>
                         <div class="card-title text-white">Total TPS</div>
                     </div>
                     <div class="card-body">
-                        <h3 class="">0</h3>
+                        <h3 class="">
+                            <?php $tps_total = 0; ?>
+                            @foreach ($kotas as $hehe)
+
+                                <?php
+                                    $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                                    $url = "https://".$hehe->domain."/api/public/get-tps";
+                                    // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
+                                    $response = $client->request('GET', $url, [
+                                        'verify'  => false,
+                                    ]);
+                                    $voices = json_decode($response->getBody());
+                                    array_push( $ApiVerifi,$voices);
+                                    
+                                ?>
+
+                               @foreach($voices as $vcs)
+                                <?php $tps_total += $vcs; ?>
+                                @endforeach
+
+                            <?php  endforeach ?>
+                            {{$tps_total}}
+                        </h3>
                     </div>
                 </div>
             </div>
@@ -437,7 +459,29 @@ endforeach ?>
                         <div class="card-title text-white">TPS Masuk</div>
                     </div>
                     <div class="card-body">
-                        <h3 class="">0</h3>
+                        <h3 class="">
+                            <?php $tps_masuk = 0; ?>
+                            @foreach ($kotas as $hehe)
+
+                                <?php
+                                    $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                                    $url = "https://".$hehe->domain."/api/public/get-tps-masuk";
+                                    // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
+                                    $response = $client->request('GET', $url, [
+                                        'verify'  => false,
+                                    ]);
+                                    $voices = json_decode($response->getBody());
+                                    array_push( $ApiVerifi,$voices);
+                                    
+                                ?>
+
+                               @foreach($voices as $vcs)
+                                <?php $tps_masuk += $vcs; ?>
+                                @endforeach
+
+                            <?php  endforeach ?>
+                            {{$tps_masuk}}
+                        </h3>
                     </div>
                 </div>
             </div>
@@ -447,7 +491,29 @@ endforeach ?>
                         <div class="card-title text-white">TPS Kosong</div>
                     </div>
                     <div class="card-body">
-                        <h3 class="">0</h3>
+                        <h3 class="">
+                            <?php $tps_kosong = 0; ?>
+                            @foreach ($kotas as $hehe)
+
+                                <?php
+                                    $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                                    $url = "https://".$hehe->domain."/api/public/get-tps-kosong";
+                                    // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
+                                    $response = $client->request('GET', $url, [
+                                        'verify'  => false,
+                                    ]);
+                                    $voices = json_decode($response->getBody());
+                                    array_push( $ApiVerifi,$voices);
+                                    
+                                ?>
+
+                               @foreach($voices as $vcs)
+                                <?php $tps_kosong += $vcs; ?>
+                                @endforeach
+
+                            <?php  endforeach ?>
+                            {{$tps_kosong}}
+                        </h3>
                     </div>
                 </div>
             </div>
