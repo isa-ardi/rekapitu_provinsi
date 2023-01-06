@@ -114,31 +114,22 @@
             columns: [
                 // each columns data
 
-                <?php foreach ($paslon_quick as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
+                ['data0', 0],
+                ['data1', 0],
+                ['data4', 0],
+                            ],
             type: 'pie', // default type of chart
             colors: {
-                <?php foreach ($paslon_quick as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
+                 'data0': "rgb(248, 38, 73)",
+                 'data1': "rgb(7, 116, 248)",
+                 'data4': "rgb(226, 161, 23)",
+                            },
             names: {
                 // name of each serie
-                <?php foreach ($paslon_quick as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
+                 'data0': " Paslon 1 - Wakil Paslon 1",
+                 'data1': " Paslon 2 - Wakil Paslon 2",
+                 'data4': " Paslon 3 - Wakil Paslon 3",
+                            }
         },
         axis: {},
         legend: {
@@ -163,31 +154,22 @@
             columns: [
                 // each columns data
 
-                <?php foreach ($paslon_terverifikasi as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
+                                                        ['data0', 0],
+                                                                                                    ['data1', 0],
+                                                        ['data4', 0],
+                            ],
             type: 'pie', // default type of chart
             colors: {
-                <?php foreach ($paslon_terverifikasi as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
+                 'data0': "rgb(248, 38, 73)",
+                 'data1': "rgb(7, 116, 248)",
+                 'data4': "rgb(226, 161, 23)",
+                            },
             names: {
                 // name of each serie
-                <?php foreach ($paslon_terverifikasi as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
+                 'data0': " Paslon 1 - Wakil Paslon 1",
+                 'data1': " Paslon 2 - Wakil Paslon 2",
+                 'data4': " Paslon 3 - Wakil Paslon 3",
+                            }
         },
         axis: {},
         legend: {

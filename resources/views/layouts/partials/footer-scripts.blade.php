@@ -1,4 +1,4 @@
-<?php
+s<?php
 
 use App\Models\User;
 ?>
@@ -149,83 +149,8 @@ let myModal = new bootstrap.Modal(document.getElementById('modallockdown'), {
         }
     });
 </script>
-@if(Request::segment('2') != "index-tsm")
-<script>
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-pie', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
 
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-                <?php endforeach  ?>
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': " <?= $pas->candidate ?> - <?= $pas->deputy_candidate ?>",
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-</script>
-<script>
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-donut', // id of chart wrapper
-    data: {
-            columns: [
-                // each columns data
 
-                <?php foreach ($paslon_terverifikasi as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-                <?php endforeach  ?>
-            ],
-            type: 'donut', // default type of chart
-            colors: {
-                <?php foreach ($paslon_terverifikasi as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon_terverifikasi as $pas) :  ?> 'data<?= $pas->id  ?>': " <?= $pas->candidate ?> - <?= $pas->deputy_candidate ?>",
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-</script>
 
 
 <!-- Make sure you put this AFTER Leaflet's CSS -->
@@ -234,125 +159,180 @@ let myModal = new bootstrap.Modal(document.getElementById('modallockdown'), {
 <!-- CHART-CIRCLE JS-->
 <script src="../../assets/js/circle-progress.min.js"></script>
 <script>
-    var map = L.map('map').setView([-6.261223099846002, 106.69325190584601], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    @foreach($tracking as $track)
-    <?php $user = User::where('id', (string)$track->id_user)->first(); ?>
-    @if($user == NULL)
-      L.marker([{{$track['latitude']}},{{$track['longitude']}}]).bindPopup(' Tidak Terdeteksi ').addTo(map);
-    @else
-       var text<?= $user['id'] ?> = '<div class="row"><div class="col-4"><img src="' + '<?php if($user["profile_photo_path"] == NULL){ echo "https://ui-avatars.com/api/?name=' + '".$user["name"]."' +'&color=7F9CF5&background=EBF4FF"; }else{ echo url("/storage/profile-photos/".$user["profile_photo_path"]); } ?>' + '" class="'+ 'img-fluid' + '"  width="150px" height="auto" /></div>   <div class="col-8"><table>' + '<tr><td>Nama</td><td>:</td><td>' + '<?= $user["name"] ?>' + '</td></tr>' + '<tr><td>Email</td><td>:</td><td>' + '<?= $user["email"]?>' + '</td></tr>' + '<tr><td>Nomor</td><td>:</td><td>' + '<?= $user["no_hp"]?>' + '</td></tr>' + '<tr><td>Last Seen</td><td>:</td><td>' + '    {{ \Carbon\Carbon::parse($user["last_seen"])->diffForHumans() }}' + '</td></tr>' + '</table><a href="{{url('/')}}/administrator/patroli_mode/tracking/detail/<?= encrypt($user["id"])?>">Detail Tracking</a>  </div> </div>';
-    L.marker([{{ $track['latitude']}}, {{ $track['longitude']}}]).bindPopup(text<?= $user['id'] ?>).addTo(map);   
-    @endif
   
-    @endforeach
-</script>
-@else
-        <script>
-               var chart = c3.generate({
-                bindto: '#chart-pie', // id of chart wrapper
-                data: {
-                    columns: [
-                         <?php $i = 1 ?>
-                                    <?php foreach ($index_tsm as $item): ?>
-                                        <?php    if($item->jenis !=0){
-                                            continue;
-                                        } ?>
-                                        <?php
-                                     $totalKec =  App\Models\Bukti_deskripsi_curang::join('list_kecurangan','list_kecurangan.id','=','bukti_deskripsi_curang.list_kecurangan_id')
-                                     ->join('saksi', 'saksi.tps_id', '=', 'bukti_deskripsi_curang.tps_id')
-                                                     ->where('saksi.status_kecurangan', "terverifikasi")
-                                    ->where('bukti_deskripsi_curang.list_kecurangan_id',$item->id)
-                                    ->where('list_kecurangan.jenis',0)
-                                    ->count();
-                                    $jumlahSaksi = App\Models\Saksi::where('kecurangan',"yes")->count();
-                                    $persen = ($totalKec/ $jumlahSaksi)*100;
-                                      ?>
-                                      ['{{$i++}}',<?=substr($persen,0,4)?>],
-                                    <?php endforeach ?>
-                    ],
-                                type: 'pie',
-                },
-                axis: {},
-                legend: {
-                    show: true, //hide legend
-                },
-                axis: {
- 		        	rotated: true,
- 		        },
-                padding: {
-                    bottom: 0,
-                    top: 0
-                },
-                size: {
-                    height: 300,
-                    width: 300
-                }
-            });
-               var chart2 = c3.generate({
-                bindto: '#chart-donut', // id of chart wrapper
-                data: {
-                    columns: [
-                         <?php $i = 1 ?>
-                                    <?php foreach ($index_tsm as $item): ?>
-                                        <?php    if($item->jenis !=1){
-                                            continue;
-                                        } ?>
-                                        <?php
-                                   $totalKec =  App\Models\Bukti_deskripsi_curang::join('list_kecurangan','list_kecurangan.id','=','bukti_deskripsi_curang.list_kecurangan_id')
-                                     ->join('saksi', 'saksi.tps_id', '=', 'bukti_deskripsi_curang.tps_id')
-                                                     ->where('saksi.status_kecurangan', "terverifikasi")
-                                    ->where('bukti_deskripsi_curang.list_kecurangan_id',$item->id)
-                                    ->where('list_kecurangan.jenis',1)
-                                    ->count();
-                                    $jumlahSaksi = App\Models\Saksi::where('kecurangan',"yes")->count();
-                                    $persen = ($totalKec/ $jumlahSaksi)*100;
-                                      ?>
-                                      ['{{$i++}}',<?=substr($persen,0,4)?>],
-                                    <?php endforeach ?>
-                    ],
-                                type: 'pie',
-                },
-                axis: {},
-                legend: {
-                    show: true, //hide legend
-                },
-                padding: {
-                    bottom: 0,
-                    top: 0
-                },
-                size: {
-                    height: 300,
-                    width: 300
-                }
-            });
-        </script>
 
-@endif
+<?php
+   $i = 1;
+   $paslonApi = [];
+   foreach($ApiMasuk as $past){
+    $voice = 0;
+    for($j = 0;$j<count($past); $j++){
+        $paslonApi['namaPas'.$j] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
+        $voice  += $past[$j]->voice;
+        $paslonApi['color'.$j] = $past[$j]->color;
+        $paslonApi['voice'.$j] =   $voice;
+    }
+    $i++;
+    $voice = 0;
+    }
+
+?>
+            <?php $i = 0; ?>
+@foreach ($paslon as $pas)
+    $('span.voice<?=$i?>').html('<?=$paslonApi['voice'.$i]?>');
+    <?php $i++; ?>
+    @endforeach
+    
+    var chart = c3.generate({
+      bindto: '#chart-all', // id of chart wrapper
+      data: {
+          columns: [
+            
+            <?php $i = 0; ?>
+            @foreach ($paslon as $pas)
+            // each columns data
+              ['data{{$i}}', <?=$paslonApi['voice'.$i]?>],
+          
+              <?php $i++; ?>
+              @endforeach
+    
+              
+          ],
+          type: 'pie', // default type of chart
+          colors: {
+            <?php $i = 0; ?>
+            @foreach ($paslon as $pas)
+
+              'data{{$i}}': " <?=$paslonApi['color'.$i]?>",
+             
+               <?php $i++; ?>
+               @endforeach
+    
+          },
+          names: {
+              // name of each serie
+              <?php $i = 0; ?>
+            @foreach ($paslon as $pas)
+
+              'data{{$i}}': " <?=$paslonApi['namaPas'.$i]?>",
+          
+               <?php $i++; ?>
+               @endforeach
+          }
+      },
+      axis: {},
+      legend: {
+          show: true, //hide legend
+      },
+      padding: {
+          bottom: 0,
+          top: 0
+      },
+    });
+
+    <?php
+   $i = 1;
+   $paslonApi = [];
+   foreach($ApiVerif as $past){
+    $voice = 0;
+    for($j = 0;$j<count($past); $j++){
+        $paslonApi['namaPas'.$j] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
+        $voice  += $past[$j]->voice;
+        $paslonApi['color'.$j] = $past[$j]->color;
+        $paslonApi['voice'.$j] =   $voice;
+    }
+    $i++;
+    $voice = 0;
+    }
+
+?>
+
+<?php $i = 0; ?>
+@foreach ($paslon as $pas)
+    $('span.voice<?=$i?>').html('<?=$paslonApi['voice'.$i]?>');
+    <?php $i++; ?>
+    @endforeach
+    var chart = c3.generate({
+      bindto: '#chart-donut', // id of chart wrapper
+      data: {
+          columns: [
+            
+            <?php $i = 0; ?>
+            @foreach ($paslon as $pas)
+            // each columns data
+              ['data{{$i}}', <?=$paslonApi['voice'.$i]?>],
+          
+              <?php $i++; ?>
+              @endforeach
+    
+              
+          ],
+          type: 'pie', // default type of chart
+          colors: {
+            <?php $i = 0; ?>
+            @foreach ($paslon as $pas)
+
+              'data{{$i}}': " <?=$paslonApi['color'.$i]?>",
+             
+               <?php $i++; ?>
+               @endforeach
+    
+          },
+          names: {
+              // name of each serie
+              <?php $i = 0; ?>
+            @foreach ($paslon as $pas)
+
+              'data{{$i}}': " <?=$paslonApi['namaPas'.$i]?>",
+          
+               <?php $i++; ?>
+               @endforeach
+          }
+      },
+      axis: {},
+      legend: {
+          show: true, //hide legend
+      },
+      padding: {
+          bottom: 0,
+          top: 0
+      },
+    });
+
+
+
+</script>
 
 <script>
+    
     /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-1', // id of chart wrapper
+   <?php
+   $i = 1;
+   foreach($ApiMasuk as $pas): 
+   ?>
+   var chart = c3.generate({
+        bindto: '#chart-{{$i}}', // id of chart wrapper
         data: {
             columns: [
-                ['data1', 0],
-                ['data2', 0],
-                ['data3', 0],
+                <?php  for($j = 0;$j<count($pas); $j++){ ?>
+                    ['data{{$j}}', {{$pas[$j]->voice}}],
+                    <?php  }?>
+              
+
             ],
             type: 'pie', // default type of chart
             colors: {
-                'data1': "rgb(248, 38, 73)",
-                'data2': "rgb(7, 116, 248)",
-                'data3': "rgb(226, 161, 23)",
+                <?php  for($j = 0;$j<count($pas); $j++){ ?>
+                'data{{$j}}': "{{$pas[$j]->color}}",
+                <?php  }?>
+                //  'data1': "rgb(7, 116, 248)",
+                //  'data4': "rgb(226, 161, 23)",
             },
             names: {
-                // name of each serie
-                'data1': "paslon 1 - wakil paslon 1",
-                'data2': "paslon 2 - wakil paslon 2",
-                'data3': "paslon 3 - wakil paslon 3",
+               // name of each serie
+               <?php  for($j = 0;$j<count($pas); $j++){ ?>
+               'data{{$j}}': "{{$pas[$j]->candidate}} | {{$pas[$j]->deputy_candidate}} ",
+               <?php  }?>
             }
         },
         axis: {},
@@ -364,254 +344,13 @@ let myModal = new bootstrap.Modal(document.getElementById('modallockdown'), {
             top: 0
         },
     });
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-1', // id of chart wrapper
-      data: {
-            columns: [
-                ['data1', 0],
-                ['data2', 0],
-                ['data3', 0],
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                'data1': "rgb(248, 38, 73)",
-                'data2': "rgb(7, 116, 248)",
-                'data3': "rgb(226, 161, 23)",
-            },
-            names: {
-                // name of each serie
-                'data1': "paslon 1 - wakil paslon 1",
-                'data2': "paslon 2 - wakil paslon 2",
-                'data3': "paslon 3 - wakil paslon 3",
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-2', // id of chart wrapper
-        data: {
-            columns: [
-                ['data1', 0],
-                ['data2', 0],
-                ['data3', 0],
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                'data1': "rgb(248, 38, 73)",
-                'data2': "rgb(7, 116, 248)",
-                'data3': "rgb(226, 161, 23)",
-            },
-            names: {
-                // name of each serie
-                'data1': "paslon 1 - wakil paslon 1",
-                'data2': "paslon 2 - wakil paslon 2",
-                'data3': "paslon 3 - wakil paslon 3",
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-3', // id of chart wrapper
-    data: {
-            columns: [
-                ['data1', 0],
-                ['data2', 0],
-                ['data3', 0],
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                'data1': "rgb(248, 38, 73)",
-                'data2': "rgb(7, 116, 248)",
-                'data3': "rgb(226, 161, 23)",
-            },
-            names: {
-                // name of each serie
-                'data1': "paslon 1 - wakil paslon 1",
-                'data2': "paslon 2 - wakil paslon 2",
-                'data3': "paslon 3 - wakil paslon 3",
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-4', // id of chart wrapper
-       data: {
-            columns: [
-                ['data1', 0],
-                ['data2', 0],
-                ['data3', 0],
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                'data1': "rgb(248, 38, 73)",
-                'data2': "rgb(7, 116, 248)",
-                'data3': "rgb(226, 161, 23)",
-            },
-            names: {
-                // name of each serie
-                'data1': "paslon 1 - wakil paslon 1",
-                'data2': "paslon 2 - wakil paslon 2",
-                'data3': "paslon 3 - wakil paslon 3",
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-5', // id of chart wrapper
-     data: {
-            columns: [
-                ['data1', 0],
-                ['data2', 0],
-                ['data3', 0],
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                'data1': "rgb(248, 38, 73)",
-                'data2': "rgb(7, 116, 248)",
-                'data3': "rgb(226, 161, 23)",
-            },
-            names: {
-                // name of each serie
-                'data1': "paslon 1 - wakil paslon 1",
-                'data2': "paslon 2 - wakil paslon 2",
-                'data3': "paslon 3 - wakil paslon 3",
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-6', // id of chart wrapper
-      data: {
-            columns: [
-                ['data1', 0],
-                ['data2', 0],
-                ['data3', 0],
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                'data1': "rgb(248, 38, 73)",
-                'data2': "rgb(7, 116, 248)",
-                'data3': "rgb(226, 161, 23)",
-            },
-            names: {
-                // name of each serie
-                'data1': "paslon 1 - wakil paslon 1",
-                'data2': "paslon 2 - wakil paslon 2",
-                'data3': "paslon 3 - wakil paslon 3",
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-7', // id of chart wrapper
-     data: {
-            columns: [
-                ['data1', 0],
-                ['data2', 0],
-                ['data3', 0],
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                'data1': "rgb(248, 38, 73)",
-                'data2': "rgb(7, 116, 248)",
-                'data3': "rgb(226, 161, 23)",
-            },
-            names: {
-                // name of each serie
-                'data1': "paslon 1 - wakil paslon 1",
-                'data2': "paslon 2 - wakil paslon 2",
-                'data3': "paslon 3 - wakil paslon 3",
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-8', // id of chart wrapper
-       data: {
-            columns: [
-                ['data1', 0],
-                ['data2', 0],
-                ['data3', 0],
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                'data1': "rgb(248, 38, 73)",
-                'data2': "rgb(7, 116, 248)",
-                'data3': "rgb(226, 161, 23)",
-            },
-            names: {
-                // name of each serie
-                'data1': "paslon 1 - wakil paslon 1",
-                'data2': "paslon 2 - wakil paslon 2",
-                'data3': "paslon 3 - wakil paslon 3",
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
+    
+  
+    
+    <?php 
+
+     $i++;
+    endforeach ?>
 </script>
 
 
