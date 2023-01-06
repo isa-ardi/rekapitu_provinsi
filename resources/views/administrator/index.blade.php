@@ -412,7 +412,7 @@ endforeach ?>
                                         'verify'  => false,
                                     ]);
                                     $voices = json_decode($response->getBody());
-                                    array_push( $ApiVerifi,$voices);
+                                 
                                     
                                 ?>
 
@@ -444,7 +444,7 @@ endforeach ?>
                                         'verify'  => false,
                                     ]);
                                     $voices = json_decode($response->getBody());
-                                    array_push( $ApiVerifi,$voices);
+                           
                                     
                                 ?>
 
@@ -476,7 +476,7 @@ endforeach ?>
                                         'verify'  => false,
                                     ]);
                                     $voices = json_decode($response->getBody());
-                                    array_push( $ApiVerifi,$voices);
+                                 
                                     
                                 ?>
 
@@ -496,7 +496,28 @@ endforeach ?>
                         <div class="card-title text-white">Suara Masuk</div>
                     </div>
                     <div class="card-body">
-                        <h3 class="">0</h3>
+                        <h3 class="">
+                            <?php $suara_masuk = 0; ?>
+                            @foreach ($kotas as $hehe)
+
+                                <?php
+                                    $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                                    $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
+                                    // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
+                                    $response = $client->request('GET', $url, [
+                                        'verify'  => false,
+                                    ]);
+                                    $voices = json_decode($response->getBody());
+                                 
+                                ?>
+
+                               @foreach($voices as $vcs)
+                                <?php $suara_masuk += $vcs->voice; ?>
+                                @endforeach
+
+                            <?php  endforeach ?>
+                            {{$suara_masuk}}
+                        </h3>
                     </div>
                 </div>
             </div>
@@ -506,7 +527,29 @@ endforeach ?>
                         <div class="card-title text-white">Suara Terverifikasi</div>
                     </div>
                     <div class="card-body">
-                        <h3 class="">0</h3>
+                        <h3 class="">
+                        <?php $suara_terverifikasi = 0; ?>
+                            @foreach ($kotas as $hehe)
+
+                                <?php
+                                    $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
+                                    $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_terverifikasi";
+                                    // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_terverifikasi";
+                                    $response = $client->request('GET', $url, [
+                                        'verify'  => false,
+                                    ]);
+                                    $voices = json_decode($response->getBody());
+                                 
+                                ?>
+
+                               @foreach($voices as $vcs)
+                                <?php $suara_terverifikasi += $vcs->voice; ?>
+                                @endforeach
+
+                            <?php  endforeach ?>
+                            {{$suara_terverifikasi}}
+
+                        </h3>
                     </div>
                 </div>
             </div>
