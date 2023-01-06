@@ -106,55 +106,7 @@
     });
 </script>
 <script>
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-pie', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
 
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-        size: {
-            height: 350,
-            width: 350
-        }
-    });
-</script>
-
-<script>
     /*chart-pie*/
     var chart = c3.generate({
         bindto: '#chart-donut', // id of chart wrapper
@@ -202,6 +154,7 @@
         }
     });
 </script>
+
 <script>
     /*chart-pie*/
     var chart = c3.generate({
@@ -251,39 +204,39 @@
     });
 </script>
 
+
+
+
 <script>
     
     /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-1', // id of chart wrapper
+   <?php
+   $i = 1;
+   foreach($dataApi as $pas): 
+   ?>
+   var chart = c3.generate({
+        bindto: '#chart-{{$i}}', // id of chart wrapper
         data: {
             columns: [
-                // each columns data
-
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
+                <?php  for($j = 0;$j<count($pas); $j++){ ?>
+                    ['data{{$j}}', {{$pas[$j]->voice}}],
+                    <?php  }?>
+              
 
             ],
             type: 'pie', // default type of chart
             colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
+                <?php  for($j = 0;$j<count($pas); $j++){ ?>
+                'data{{$j}}': "{{$pas[$j]->color}}",
+                <?php  }?>
+                //  'data1': "rgb(7, 116, 248)",
+                //  'data4': "rgb(226, 161, 23)",
             },
             names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
+               // name of each serie
+               <?php  for($j = 0;$j<count($pas); $j++){ ?>
+               'data{{$j}}': "{{$pas[$j]->candidate}} | {{$pas[$j]->deputy_candidate}} ",
+               <?php  }?>
             }
         },
         axis: {},
@@ -296,352 +249,89 @@
         },
     });
     
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-2', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
-
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
+  
     
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-3', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
+    <?php 
 
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-4', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
-
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-5', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
-
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-6', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
-
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-7', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
-
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-8', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
-
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    
-    /*chart-pie*/
-    var chart = c3.generate({
-        bindto: '#chart-all', // id of chart wrapper
-        data: {
-            columns: [
-                // each columns data
-
-                <?php foreach ($paslon as $pas) :  ?>
-                    <?php $voice = 0;  ?>
-                    <?php foreach ($pas->saksi_data as $pak) :  ?>
-                        <?php
-                        $voice += $pak->voice;
-                        ?>
-                    <?php endforeach  ?>['data<?= $pas->id  ?>', <?= $voice ?>],
-
-                <?php endforeach  ?>
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php foreach ($paslon as $pas) :  ?> 'data<?= $pas->id  ?>': "<?= $pas->color ?>",
-                <?php endforeach  ?>
-
-            },
-            names: {
-                // name of each serie
-                <?php foreach ($paslon as $pas) :  ?>
-
-                    'data<?= $pas->id  ?>': " <?= $pas->candidate ?> | <?= $pas->deputy_candidate ?>",
-
-                <?php endforeach  ?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
+     $i++;
+    endforeach ?>
 </script>
+<?php
+   $i = 1;
+   $paslonApi = [];
+   foreach($dataApi as $past){
+    $voice = 0;
+    for($j = 0;$j<count($past); $j++){
+        $paslonApi['namaPas'.$j] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
+        $voice  += $past[$j]->voice;
+        $paslonApi['color'.$j] = $past[$j]->color;
+        $paslonApi['voice'.$j] =   $voice;
+    }
+    $i++;
+    $voice = 0;
+    }
 
+?>
 <script>
+<?php $i = 0; ?>
+@foreach ($paslon as $pas)
+    $('span.voice<?=$i?>').html('<?=$paslonApi['voice'.$i]?>');
+    <?php $i++; ?>
+    /*chart-pie*/
+    @endforeach
+    
+    var chart = c3.generate({
+      bindto: '#chart-all', // id of chart wrapper
+      data: {
+          columns: [
+            
+            <?php $i = 0; ?>
+            @foreach ($paslon as $pas)
+            // each columns data
+              ['data{{$i}}', <?=$paslonApi['voice'.$i]?>],
+          
+              <?php $i++; ?>
+              @endforeach
+    
+              
+          ],
+          type: 'pie', // default type of chart
+          colors: {
+            <?php $i = 0; ?>
+            @foreach ($paslon as $pas)
+
+              'data{{$i}}': " <?=$paslonApi['color'.$i]?>",
+             
+               <?php $i++; ?>
+               @endforeach
+    
+          },
+          names: {
+              // name of each serie
+              <?php $i = 0; ?>
+            @foreach ($paslon as $pas)
+
+              'data{{$i}}': " <?=$paslonApi['namaPas'.$i]?>",
+          
+               <?php $i++; ?>
+               @endforeach
+          }
+      },
+      axis: {},
+      legend: {
+          show: true, //hide legend
+      },
+      padding: {
+          bottom: 0,
+          top: 0
+      },
+    });
+
+
+
+
+
+
     $('tr.modal-id').on('click', function() {
         let id = $(this).data('id');
         $.ajax({
@@ -657,6 +347,9 @@
             }
         });
     });
+
+
+
 </script>
 <script>
     setTimeout(function() {

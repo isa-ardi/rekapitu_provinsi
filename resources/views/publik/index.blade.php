@@ -41,10 +41,10 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
                 </div>
             </div>
             <div class="col-12 text-center fs-5 fw-bold">
+                <?php $i = 0; ?>
                 @foreach ($paslon as $pas)
-
-                    {{$pas->candidate}} {{$pas->deputy_candidate}} - 0 <br>
-                    
+                    {{$pas->candidate}} {{$pas->deputy_candidate}} - <span class="voice{{$i}}"></span> <br>
+                    <?php $i++; ?>
                 @endforeach
                
             </div>
@@ -88,36 +88,7 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
                         ?>
     <tr>
       <th scope="row"> 
-            <a href="
-            <?php 
-                if ($hehe->id == 3601){ //pandeglang
-                    echo "http://kab-pandeglang.pilpres.banten.rekapitung.id";
-                }
-                else if ($hehe->id == 3602){
-                    echo "http://lebak.pilpres.banten.rekapitung.id";
-                }
-                else if ($hehe->id == 3603){
-                    echo "http://kab-tanggerang.pilpres.banten.rekapitung.id";
-                }
-                else if ($hehe->id == 3604){
-                    echo "http://kab-serang.pilpres.banten.rekapitung.id";
-                }
-                else if ($hehe->id == 3671){
-                    echo "http://tanggerang.pilpres.banten.rekapitung.id";
-                }
-                else if ($hehe->id == 3672){
-                    echo "http://cilegon.pilpres.banten.rekapitung.id";
-                }
-                else if ($hehe->id == 3673){
-                    echo "http://serang.pilpres.banten.rekapitung.id";
-                }
-                else if ($hehe->id == 3674){
-                    echo "http://tangsel.pilpres.banten.rekapitung.id";
-                }
-                else { }
-                  
-            ?>">
-                
+            <a href="https://{{$hehe->domain}}/checksetup">
                 <?= $hehe->name  ?>
             </a>      
       </th>
