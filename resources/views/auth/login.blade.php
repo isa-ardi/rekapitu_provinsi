@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="container-login100-form-btn">
                                     <button class="login100-form-btn btn-danger text-white p-1 mt-2"type="button" id="pengajuan">
-                                        <img src="<?= asset('')  ?>assets/acakey_new_icon_key.png"
+                                        <img src="<?= asset('')  ?>public/assets/acakey_new_icon_key.png"
                                             style="width:20px;height:auto;">&nbsp;
                                         Get Kode ACA
                                     </button>
@@ -168,7 +168,7 @@
                             .removeClass("alert-danger")
                             .addClass("alert-success");
                         $("div#kodeAlert").html(res.success);
-                        $("#pengajuan").html(`   <img src="<?= asset('')  ?>assets/acakey_new_icon_key.png" style="width:20px;height:auto;">&nbsp;
+                        $("#pengajuan").html(`   <img src="<?= asset('')  ?>public/assets/acakey_new_icon_key.png" style="width:20px;height:auto;">&nbsp;
                                     Get Kode ACA`);
                         let time = 60;
                         $("#pengajuan").attr("disabled", true);
@@ -179,7 +179,7 @@
                         }, 1000);
                         setTimeout(function () {
                             $("#pengajuan").attr("disabled", false);
-                            $("#pengajuan").html(`   <img src="<?= asset('')  ?>assets/acakey_new_icon_key.png" style="width:20px;height:auto;">&nbsp;
+                            $("#pengajuan").html(`   <img src="<?= asset('')  ?>public/assets/acakey_new_icon_key.png" style="width:20px;height:auto;">&nbsp;
                                     Get Kode ACA`);
                             clearInterval(timeOut);
                             Containertime.html("");
@@ -189,7 +189,7 @@
                             .removeClass("alert-success")
                             .addClass("alert-danger");
                         $("#pengajuan").attr("disabled", false);
-                        $("#pengajuan").html(`   <img src="<?= asset('')  ?>assets/acakey_new_icon_key.png" style="width:20px;height:auto;">&nbsp;
+                        $("#pengajuan").html(`   <img src="<?= asset('')  ?>public/assets/acakey_new_icon_key.png" style="width:20px;height:auto;">&nbsp;
                                     Get Kode ACA`);
                         $("div#kodeAlert").html(res.error);
                     }
