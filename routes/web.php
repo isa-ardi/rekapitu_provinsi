@@ -12,7 +12,6 @@ use App\Http\Controllers\SetupController;
 use App\Http\Controllers\VerificatorController;
 use App\Http\Controllers\Users;
 use App\Http\Controllers\DevelopingController;
-
 use App\Models\Config;
 use App\Models\District;
 use App\Models\Province;
@@ -20,6 +19,7 @@ use App\Models\Regency;
 use App\Models\Tps;
 use App\Models\User;
 use App\Models\Village;
+use App\Http\Controllers\EmailController;
 use App\Notifications\WelcomeEmailNotification;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -45,6 +45,8 @@ use App\Http\Controllers\CommanderController;
 use App\Http\Controllers\HunterController;
 use App\Http\Controllers\Payrole;
 use App\Models\MultiAdministrator;
+use App\Models\ProvinceDomain;
+use App\Models\RegenciesDomain;
 use Illuminate\Support\Facades\Cookie;
 
 use function GuzzleHttp\Promise\all;
@@ -105,7 +107,7 @@ Route::get('/registrasi_saksi', function () {
     ]);
 })->name('registrasi');
 Route::get('/redirect', [LoginController::class, 'index']);
-
+Route::get('/get-aca', [EmailController::class, 'getAca'])->name('getAca');
 // Ajax Kelurahan / Kecamatan
 Route::get('getCourse/{id}', function ($id) {
     $course = Regency::where('province_id', $id)->get();
@@ -152,11 +154,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('r-data-record','rDataRecord');
             Route::get('get-api-masuk','apiMasuk');
             Route::get('get-api-verif','apiVerif');
-            
             Route::get('r-data','rdata');
-
-
-
             Route::post('main-permission','mainPermission');
                Route::get('solution/{id}','solution')->name('solution');
             Route::get('laporan-bawaslu','laporanBapilu')->name('laporan_bapilu');
@@ -454,6 +452,9 @@ Route::group(['middleware'=>['auth','role:banding']],function (){
 
 Route::controller(DevelopingController::class)->group(function () {
     Route::get('dev/index', 'index');
+
+    Route::get('get-api-masuk','apiMasuk');
+
     Route::post('dev/action_saksi', 'action_saksi');
     Route::get('dev/tps_update', 'tps_update');
     Route::get('dev/saksi_update', 'saksi_update');
@@ -531,7 +532,11 @@ Route::get('/login-commander',function ()
    return view('auth.login_commander');
 });
 
-Route::get('/kota-setup',function(){
-   return "sik setup anjg"; 
+Route::get('/cek-domain',function(){
+   $config = Config::first();
+   $domain = RegenciesDomain::where('province_id',$config->provinces_id)->get();
+   foreach($domain as $d){
+    echo $d->domain."<br>";
+   }
 });
 

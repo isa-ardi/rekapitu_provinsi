@@ -27,6 +27,11 @@ class DevelopingController extends Controller
         $data['paslon'] = Paslon::get();
         return view('developing.index',$data);
      }
+     public function apiMasuk()
+     {
+        $data['paslon'] = Paslon::get();
+        return view('developing.api_masuk',$data);
+     }
 
      public function action_saksi(Request $request)
      {

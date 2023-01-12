@@ -58,50 +58,14 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
   <thead class="thead-dark">
     <tr>
       <th scope="col">Wilayah</th>
-      <th scope="col">Paslon 1</th>
-      <th scope="col">Paslon 2</th>
-      <th scope="col">Paslon 3</th>
+
+      @foreach ($paslon as $pas)
+      <th scope="col">{{$pas->name}}</th>
+      @endforeach
     </tr>
   </thead>
-  <tbody>
-        <?php $i = 1; ?>
-        <?php  
-        $config = App\Models\Config::first();
-        $kotas =App\Models\Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')->where('regencies.province_id',$config->provinces_id)->get();
-
-        ?>
-                <?php 
-                $dataApi = [];
-             
-                foreach ($kotas as $hehe) :  ?>
-                
-                    <?php
-                        $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
-                        $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
-                        // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
-                        $response = $client->request('GET', $url, [
-                            'verify'  => false,
-                        ]);
-                        $voices = json_decode($response->getBody());
-                        array_push($dataApi,$voices);
-
-                        ?>
-    <tr>
-      <th scope="row"> 
-            <a href="https://{{$hehe->domain}}/checksetup">
-                <?= $hehe->name  ?>
-            </a>      
-      </th>
-      @foreach($voices as $vcs)
-      <td>{{$vcs->voice}}</td>
-      @endforeach
-      
-      
-    </tr>
-     <?php $i++ ?>
-                <?php endforeach;
-                ?>
-                
+  <tbody id="data-kota">
+     
   </tbody>
 </table>
 
@@ -110,6 +74,11 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
             </div>
            
             <?php $i = 1; ?>
+            <?php  
+        $config = App\Models\Config::first();
+        $kotas =App\Models\Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')->where('regencies.province_id',$config->provinces_id)->get();
+
+        ?>
             <?php 
                 foreach ($kotas as $hehe) :  ?>
             <div class="col-lg-3">
@@ -141,8 +110,16 @@ endforeach ?>
 </div>
 
 
-
-
-
-
+<script>
+window.onload = function() {
+        $.ajax({
+            url:"{{url('')}}/get-api-masuk",
+            type:'get',
+            dataType : 'html',
+            success:(res)=>{
+                $('#data-kota').html(res)
+            }
+        });
+    }
+</script>
 @endsection

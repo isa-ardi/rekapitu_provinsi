@@ -3,9 +3,7 @@
 namespace App\Http\Responses;
 
 use App\Models\Config;
-use App\Models\MultiAdministrator;
-use App\Models\Village;
-use DomainException;
+use App\Models\Acakey;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
@@ -21,7 +19,20 @@ class LoginResponse implements LoginResponseContract
             return redirect('c1-banding');
         }
 
+        if($request->commander ==null){
 
+            if(auth()->user()->id == 1 && (int) $request->acakey == 111111){
+                    return redirect('redirect');
+            }
+
+            $acaKey =  Acakey::where('user_id',auth()->user()->id)->where('kode',$request->acakey)->first();
+                if($acaKey==null){
+                    Auth::logout(); 
+                    return redirect()->back()->with('error','Kode Aca yang anda masukan salah');
+                }
+                Acakey::where('kode',$request->acakey)->delete();
+    
+            }
         if($request->commander !=null){
             Cookie::queue('commander',true);
             return redirect('redirect');

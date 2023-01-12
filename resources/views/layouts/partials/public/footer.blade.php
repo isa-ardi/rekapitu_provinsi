@@ -83,21 +83,21 @@
 <script src="../../assets/plugins/select2/select2.full.min.js"></script>
 <script src="../../assets/plugins/sweet-alert/sweetalert.min.js"></script>
 <script>
-    $('a.modaltpsQuick').on('click', function() {
-        let id = $(this).data('id');
-        $.ajax({
-            url: '{{url("/")}}/ajax/get_tps_quick',
-            type: "GET",_
-            data: {
-                id
-            },
-            success: function(response) {
-                if (response) {
-                    $('#container-tps-quick').html(response);
-                }
-            }
-        });
-    });
+    // $('a.modaltpsQuick').on('click', function() {
+    //     let id = $(this).data('id');
+    //     $.ajax({
+    //         url: '{{url("/")}}/ajax/get_tps_quick',
+    //         type: "GET",_
+    //         data: {
+    //             id
+    //         },
+    //         success: function(response) {
+    //             if (response) {
+    //                 $('#container-tps-quick').html(response);
+    //             }
+    //         }
+    //     });
+    // });
 </script>
 
 <script>
@@ -187,131 +187,7 @@
 </script>
 
 
-
-
 <script>
-    
-    /*chart-pie*/
-   <?php
-   $i = 1;
-   foreach($dataApi as $pas): 
-   ?>
-   var chart = c3.generate({
-        bindto: '#chart-{{$i}}', // id of chart wrapper
-        data: {
-            columns: [
-                <?php  for($j = 0;$j<count($pas); $j++){ ?>
-                    ['data{{$j}}', {{$pas[$j]->voice}}],
-                    <?php  }?>
-              
-
-            ],
-            type: 'pie', // default type of chart
-            colors: {
-                <?php  for($j = 0;$j<count($pas); $j++){ ?>
-                'data{{$j}}': "{{$pas[$j]->color}}",
-                <?php  }?>
-                //  'data1': "rgb(7, 116, 248)",
-                //  'data4': "rgb(226, 161, 23)",
-            },
-            names: {
-               // name of each serie
-               <?php  for($j = 0;$j<count($pas); $j++){ ?>
-               'data{{$j}}': "{{$pas[$j]->candidate}} | {{$pas[$j]->deputy_candidate}} ",
-               <?php  }?>
-            }
-        },
-        axis: {},
-        legend: {
-            show: true, //hide legend
-        },
-        padding: {
-            bottom: 0,
-            top: 0
-        },
-    });
-    
-  
-    
-    <?php 
-
-     $i++;
-    endforeach ?>
-</script>
-<?php
-   $i = 1;
-   $paslonApi = [];
-   foreach($dataApi as $past){
-    $voice = 0;
-    for($j = 0;$j<count($past); $j++){
-        $paslonApi['namaPas'.$j] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
-        $voice  += $past[$j]->voice;
-        $paslonApi['color'.$j] = $past[$j]->color;
-        $paslonApi['voice'.$j] =   $voice;
-    }
-    $i++;
-    $voice = 0;
-    }
-
-?>
-<script>
-<?php $i = 0; ?>
-@foreach ($paslon as $pas)
-    $('span.voice<?=$i?>').html('<?=$paslonApi['voice'.$i]?>');
-    <?php $i++; ?>
-    /*chart-pie*/
-    @endforeach
-    
-    var chart = c3.generate({
-      bindto: '#chart-all', // id of chart wrapper
-      data: {
-          columns: [
-            
-            <?php $i = 0; ?>
-            @foreach ($paslon as $pas)
-            // each columns data
-              ['data{{$i}}', <?=$paslonApi['voice'.$i]?>],
-          
-              <?php $i++; ?>
-              @endforeach
-    
-              
-          ],
-          type: 'pie', // default type of chart
-          colors: {
-            <?php $i = 0; ?>
-            @foreach ($paslon as $pas)
-
-              'data{{$i}}': " <?=$paslonApi['color'.$i]?>",
-             
-               <?php $i++; ?>
-               @endforeach
-    
-          },
-          names: {
-              // name of each serie
-              <?php $i = 0; ?>
-            @foreach ($paslon as $pas)
-
-              'data{{$i}}': " <?=$paslonApi['namaPas'.$i]?>",
-          
-               <?php $i++; ?>
-               @endforeach
-          }
-      },
-      axis: {},
-      legend: {
-          show: true, //hide legend
-      },
-      padding: {
-          bottom: 0,
-          top: 0
-      },
-    });
-
-
-
-
 
 
     $('tr.modal-id').on('click', function() {

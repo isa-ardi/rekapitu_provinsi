@@ -32,12 +32,8 @@ use App\Models\History;
 use App\Models\Village;
 use App\Models\Relawan;
 use App\Models\SolutionFraud;
-use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Rekapitulator;
-use Rekening;
-use Tracking;
 
 class AdminController extends Controller
 {
