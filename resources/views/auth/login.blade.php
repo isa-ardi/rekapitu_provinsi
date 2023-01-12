@@ -64,7 +64,6 @@
                                                 stroke-dasharray="20" />
                                         </svg>
                                     </div>
-                                </div>
                                 <div class="col-lg-12">
                                     <p class="containerTime text-danger text-center">
 

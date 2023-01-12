@@ -4,6 +4,7 @@ namespace App\Http\Responses;
 
 use App\Models\Config;
 use App\Models\Acakey;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
