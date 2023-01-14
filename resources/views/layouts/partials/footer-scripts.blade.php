@@ -1,4 +1,4 @@
-s<?php
+<?php
 
 use App\Models\User;
 ?>
@@ -51,19 +51,6 @@ use App\Models\User;
 <!-- INTERNAL SELECT2 JS -->
 <script src="../../assets/plugins/select2/select2.full.min.js"></script>
 
-<!-- DATA TABLE JS-->
-<script src="../../assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
-<script src="../../assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
-<script src="../../assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
-<script src="../../assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
-<script src="../../assets/plugins/datatable/js/jszip.min.js"></script>
-<script src="../../assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
-<script src="../../assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
-<script src="../../assets/plugins/datatable/js/buttons.html5.min.js"></script>
-<script src="../../assets/plugins/datatable/js/buttons.print.min.js"></script>
-<script src="../../assets/plugins/datatable/js/buttons.colVis.min.js"></script>
-<script src="../../assets/plugins/datatable/dataTables.responsive.min.js"></script>
-<script src="../../assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
 <script src="../../assets/js/table-data.js"></script>
 
 <!-- ECHART JS-->
@@ -75,10 +62,6 @@ use App\Models\User;
 <!-- SIDEBAR JS -->
 <script src="../../assets/plugins/sidebar/sidebar.js"></script>
 
-<!-- Perfect SCROLLBAR JS-->
-<script src="../../assets/plugins/p-scroll/perfect-scrollbar.js"></script>
-<script src="../../assets/plugins/p-scroll/pscroll.js"></script>
-<script src="../../assets/plugins/p-scroll/pscroll-1.js"></script>
 
 <!-- APEXCHART JS -->
 <script src="../../assets/js/apexcharts.js"></script>
@@ -104,51 +87,8 @@ use App\Models\User;
 
 
 
-@include('layouts.templateCommander.script-command')
-
-<script>
-
-let myModal = new bootstrap.Modal(document.getElementById('modallockdown'), {
-   keyboard : false,
-   backdrop : "static"
-});
 
 
-
-    $(document).ready(function() {
-        
-        @if($config->lockdown == "yes")
-            myModal.show()
-        @endif
-        
-        
-        Pusher.logToConsole = true;
-        var pusher = new Pusher('d3492f7a24c6c2d7ed0f', {
-            cluster: 'ap1'
-        });
-        var channel = pusher.subscribe('messages');
-        channel.bind('my-event', function(data) {
-            show_count(data);
-            playSound();
-        });
-
-        function show_count(data) {
-            notif({
-                type: "success",
-                msg: data.message,
-                width: "all",
-                height: 70,
-                position: "center"
-            });
-        }
-
-        function playSound(url) {
-            const audio = new Audio(url);
-            audio.play();
-            console.log(audio);
-        }
-    });
-</script>
 
 
 
@@ -355,6 +295,8 @@ let myModal = new bootstrap.Modal(document.getElementById('modallockdown'), {
 
 
 
-</body>
 
-</html>
+
+
+
+

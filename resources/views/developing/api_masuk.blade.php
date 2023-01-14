@@ -1,4 +1,6 @@
 <?php 
+use Illuminate\Support\Facades\Cache;
+
 $config = App\Models\Config::first();
 $kotas = App\Models\Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')
     ->where('regencies.province_id', $config->provinces_id)
@@ -9,8 +11,12 @@ $dataApi = [];
 $i = 0;
 foreach ($kotas as $hehe) : 
     $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
-    $response = $client->request('GET', $url, ['verify' => false]);
-    $voices = json_decode($response->getBody());
+    $voices = Cache::get($url, function () use ($client, $url) {
+        $response = $client->request('GET', $url, ['verify' => false]);
+        $voices = json_decode($response->getBody());
+        Cache::put($url, $voices, 60);
+        return $voices;
+    });
     array_push($dataApi, $voices);
 ?>
 <tr>

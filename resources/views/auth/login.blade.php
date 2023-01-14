@@ -132,11 +132,28 @@
 </div>
 
 <script>
-    var x = document.getElementById("demo");
     window.onload = function() {
+        var x = document.getElementById("demo");
         getLocation()
 
         
+
+         function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPosition(position) {
+        document.getElementById("latitude").value = position.coords.latitude;
+        document.getElementById("longitude").value = position.coords.longitude;
+
+    }
+
+
+
  $("#pengajuan").on("click", function () {
         let email = $("form").find('input[name="email"]');
         if (email.val() == "") {
@@ -202,23 +219,13 @@
             });
         }
     });
+
+   
+
     }
 
   
 
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
-        }
-    }
-
-    function showPosition(position) {
-        document.getElementById("latitude").value = position.coords.latitude;
-        document.getElementById("longitude").value = position.coords.longitude;
-
-    }
 
 
 

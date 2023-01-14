@@ -48,6 +48,7 @@ use App\Models\MultiAdministrator;
 use App\Models\ProvinceDomain;
 use App\Models\RegenciesDomain;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Redis;
 
 use function GuzzleHttp\Promise\all;
 
@@ -154,6 +155,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('r-data-record','rDataRecord');
             Route::get('get-api-masuk','apiMasuk');
             Route::get('get-api-verif','apiVerif');
+            Route::get('get-api-cards','apiCards');
             Route::get('r-data','rdata');
             Route::post('main-permission','mainPermission');
                Route::get('solution/{id}','solution')->name('solution');
@@ -540,3 +542,7 @@ Route::get('/cek-domain',function(){
    }
 });
 
+// Route::get('/redis',function(){
+//     $redis = Redis::incr('p');
+//     return $redis;
+// });

@@ -29,8 +29,8 @@ class DevelopingController extends Controller
      }
      public function apiMasuk()
      {
-        $data['paslon'] = Paslon::get();
-        return view('developing.api_masuk',$data);
+         $data['paslon'] = Paslon::select('candidate','deputy_candidate','id')->get();
+         return view('developing.api_masuk',$data);
      }
 
      public function action_saksi(Request $request)

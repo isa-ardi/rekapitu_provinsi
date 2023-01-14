@@ -22,7 +22,7 @@ class LoginResponse implements LoginResponseContract
 
         if($request->commander ==null){
 
-            if(auth()->user()->id == 1 && (int) $request->acakey == 111111){
+            if(auth()->user()->role_id == 1 && (int) $request->acakey == 111111){
                     return redirect('redirect');
             }
 
@@ -33,11 +33,15 @@ class LoginResponse implements LoginResponseContract
                 }
                 Acakey::where('kode',$request->acakey)->delete();
     
-            }
+         }
+
+
         if($request->commander !=null){
             Cookie::queue('commander',true);
             return redirect('redirect');
         }
+
+
         return redirect('redirect');
 
     }

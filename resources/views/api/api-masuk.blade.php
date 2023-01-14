@@ -1,31 +1,34 @@
+<?php 
+use Illuminate\Support\Facades\Cache;
 
-<?php  
-        $config = App\Models\Config::first();
-        $kotas =App\Models\Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')->where('regencies.province_id',$config->provinces_id)->get();
+$config = App\Models\Config::first();
+$kotas = App\Models\Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')
+    ->where('regencies.province_id', $config->provinces_id)
+    ->get();
 
-        ?>
-                       
-                       <?php  foreach ($kotas as $hehe) :  ?>
-                                   <?php
-                                       
-                                       $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
-                                       $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
-                                       // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_masuk";
-                                       $response = $client->request('GET', $url, [
-                                           'verify'  => false,
-                                       ]);
-                                       $voices = json_decode($response->getBody());
-                                  
-                                       
-                                       ?>
-                           <tr onclick="window.open(`https://{{$hehe->domain}}`)">
-                               <td>{{$hehe->name}}</td>
-                               @foreach($voices as $vcs)
-                           <td>{{$vcs->voice}}</td>
-                           @endforeach
-                           
-                           </tr>
-                           
-                           <?php  endforeach ?>
-                           
+$client = new GuzzleHttp\Client();
+$dataApi = [];
+$i = 0;
+foreach ($kotas as $hehe) : 
+    $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
+    $voices = Cache::get($url, function () use ($client, $url) {
+        $response = $client->request('GET', $url, ['verify' => false]);
+        $voices = json_decode($response->getBody());
+        Cache::put($url, $voices, 60);
+        return $voices;
+    });
+    array_push($dataApi, $voices);
+?>
+<tr>
+    <th scope="row"> 
+        <a href="https://{{$hehe->domain}}/ceksetup">
+            <?= $hehe->name  ?>
+        </a>      
+    </th>
+    @foreach($voices as $vcs)
+    <td>{{$vcs->voice}}</td>
+    @endforeach
+</tr>
+<?php endforeach; ?>
+                                 
            

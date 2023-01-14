@@ -53,45 +53,41 @@ class AdminController extends Controller
     {
        
         date_default_timezone_set("Asia/Jakarta");
-        $data['jam'] = date("H");
-        $data['marquee'] = Saksi::join('users', 'users.tps_id', "=", "saksi.tps_id")->get();
+        // $data['jam'] = date("H");
+        // $data['marquee'] = Saksi::join('users', 'users.tps_id', "=", "saksi.tps_id")->get();
         $paslon_tertinggi = DB::select(DB::raw('SELECT paslon_id,SUM(voice) as total FROM saksi_data GROUP by paslon_id ORDER by total DESC LIMIT 1'));
 
         $data['paslon_tertinggi'] = Paslon::where('id', $paslon_tertinggi['0']->paslon_id)->first();
-        $data['paslon']                   = Paslon::with('saksi_data')->get();
-        $data['paslon_terverifikasi']     = Paslon::with(['saksi_data' => function ($query) {
-            $query->join('saksi', 'saksi_data.saksi_id', 'saksi.id')
-                ->whereNull('saksi.pending')
-                ->where('saksi.verification', 1);
-        }])->get();
-        $verification                     = Saksi::where('verification', 1)->with('saksi_data')->get();
-        $dpt                              = District::where('regency_id', $this->config->regencies_id)->sum("dpt");
-        $incoming_vote                    = SaksiData::select('voice')->get();
-        $voice = SaksiData::sum('voice');
-        $data['total_verification_voice'] = 0;
-        $data['total_incoming_vote']      = SaksiData::sum('voice');
-        $data['realcount']                = $data['total_incoming_vote'] / $dpt * 100;
-        $data['district']                 = District::where("regency_id", $this->config->regencies_id)->get();
-        foreach ($verification as $key) {
-            foreach ($key->saksi_data as $verif) {
-                $data['total_verification_voice'] += $verif->voice;
-            }
-        }
-        $data['saksi_masuk'] = Saksi::count();
-        $data['tps_masuk'] = Tps::where('district_id',3674040)->count();
-        $data['total_tps']   = 2963;
-        $data['tps_kosong']  =  $data['total_tps'] - $data['tps_masuk'];
+            $data['paslon'] = Paslon::with(['saksi_data'])->get();
+            $data['paslon_terverifikasi'] = Paslon::with(['saksi_data' => function ($query) {
+                $query->join('saksi', 'saksi_data.saksi_id', '=', 'saksi.id')
+                    ->whereNull('saksi.pending')
+                    ->where('saksi.verification', 1);
+            }])->get();
+      
+        // $dpt                              = District::where('regency_id', $this->config->regencies_id)->sum("dpt");
+        // $incoming_vote                    = SaksiData::select('voice')->get();
+        // $voice = SaksiData::sum('voice');
+     
+    //     $data['total_incoming_vote'] = SaksiData::sum('voice');
+        $data['realcount']                = 0;
+    //     $data['district']                 = District::where("regency_id", $this->config->regencies_id)->get();
+    //    $data['total_verification_voice'] = SaksiData::whereIn('saksi_id', Saksi::where('verification', 1)->pluck('id'))->sum('voice');
+    $data['saksi_masuk'] = Saksi::count('id');
+        // $data['tps_masuk'] = Tps::where('district_id',3674040)->count();
+    //     $data['total_tps']   = 2963;
+    //     $data['tps_kosong']  =  $data['total_tps'] - $data['tps_masuk'];
 
 
-        $data['saksi_terverifikasi'] = Saksi::where('verification', 1)->count();
-        foreach ($incoming_vote as $key) {
-            $data['total_incoming_vote'] += $key->voice;
-        }
-        $data['tracking'] = ModelsTracking::get();
+        $data['saksi_terverifikasi'] = 0;
+    //     foreach ($incoming_vote as $key) {
+    //         $data['total_incoming_vote'] += $key->voice;
+    //     }
+    //     $data['tracking'] = ModelsTracking::get();
         $data['config'] = Config::first();
-        $data['kec'] = District::where('regency_id', $data['config']['regencies_id'])->get();
-        $data['data_prov'] = Province::where('id',36)->first();
-        $data['kota_prov'] = Regency::where('province_id', $data['data_prov']['id'])->get();
+        // $data['kec'] = District::where('regency_id', $data['config']['regencies_id'])->get();
+        // $data['data_prov'] = Province::where('id',36)->first();
+        // $data['kota_prov'] = Regency::where('province_id', $data['data_prov']['id'])->get();
         return view('administrator.index', $data);
     }
 
@@ -1244,6 +1240,10 @@ class AdminController extends Controller
     public function apiVerif()
     {
         return view('api.api-verif');
+    }
+    public function apiCards()
+    {
+        return view('api.api-cards');
     }
 
     /**
