@@ -88,42 +88,78 @@ foreach ($kotas as $hehe) :
 
 
 <?php
-   $i = 1;
-   $paslonApi = [];
-   foreach($dataApi as $past){
-    $voice = 0;
-    for($j = 0;$j<count($past); $j++){
-        $paslonApi['namaPas'.$j] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
-        $voice  += $past[$j]->voice;
-        $paslonApi['color'.$j] = $past[$j]->color;
-        $paslonApi['voice'.$j] =   $voice;
-    }
-    $i++;
-    $voice = 0;
-    }
+
+
+ $i = 1;
+$paslonApi = [];
+foreach($dataApi as $past){
+   $voice = 0;
+   for($j = 0;$j<count($past); $j++){
+       $paslonApi[$j]['namaPas'] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
+       $paslonApi[$j]['color'] = $past[$j]->color;
+       $paslonApi[$j]['voice'] = 0;
+       $paslonApi[$j]['voice'] += $past[$j]->voice;
+   }
+   $i++;
+}
+$coba = json_encode($dataApi);
+
+
 
 ?>
 
 
 <script>
-<?php $i = 0; ?>
-@foreach ($paslon as $pas)
-    $('span.voice<?=$i?>').html('<?=$paslonApi['voice'.$i]?>');
-    <?php $i++; ?>
-    /*chart-pie*/
-    @endforeach
+
+     let arr =   JSON.parse('<?=$coba?>')
+
+     let paslon1 = 0;
+  let paslon2 = 0;
+  let paslon3 = 0;
+
+for(let items of arr){
+  
+  for (let item of items){
+  	switch(item.candidate){
+  	case 'Paslon 1':
+    	paslon1 += item.voice;
+    break;
     
+    case 'Paslon 2':
+    	paslon2 += item.voice;
+    break;
+    
+    case 'Paslon 3':
+    	paslon3 += item.voice;
+    break;
+    
+    default:
+    	console.log('ada kesalahan di candidate')
+    break;
+  }
+  }
+  
+}
+
+console.log(paslon1)
+
+
+
+
+
     var chart = c3.generate({
       bindto: '#chart-all', // id of chart wrapper
       data: {
           columns: [
             
-            <?php $i = 0; ?>
+            <?php $i = 1; ?>
+            <?php $j = 0; ?>
             @foreach ($paslon as $pas)
             // each columns data
-              ['data{{$i}}', <?=$paslonApi['voice'.$i]?>],
+              ['data{{$j}}', <?='paslon'.$i?>],
           
               <?php $i++; ?>
+              <?php $j++; ?>
               @endforeach
     
               
@@ -133,7 +169,7 @@ foreach ($kotas as $hehe) :
             <?php $i = 0; ?>
             @foreach ($paslon as $pas)
 
-              'data{{$i}}': " <?=$paslonApi['color'.$i]?>",
+              'data{{$i}}': " <?=  $paslonApi[$i]['color']?>",
              
                <?php $i++; ?>
                @endforeach
@@ -144,7 +180,7 @@ foreach ($kotas as $hehe) :
               <?php $i = 0; ?>
             @foreach ($paslon as $pas)
 
-              'data{{$i}}': " <?=$paslonApi['namaPas'.$i]?>",
+              'data{{$i}}': " <?=  $paslonApi[$i]['namaPas']?>",
           
                <?php $i++; ?>
                @endforeach
@@ -160,8 +196,13 @@ foreach ($kotas as $hehe) :
       },
     });
 
-
-    @foreach ($paslon as $i => $pas)
-        $('span.voice<?=$i?>').html('<?=$paslonApi['voice'.$i]?>');
+    
+            <?php $i = 1; ?>
+            <?php $j = 0; ?>
+    @foreach ($paslon as $pas)
+        $('span.voice<?=$j?>').html(<?='paslon'.(int)$i?>);
+        <?php $i++; ?>
+        <?php $j++; ?>
     @endforeach
-</script>
+
+</script>   

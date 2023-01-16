@@ -46,7 +46,6 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
                     {{$pas->candidate}} {{$pas->deputy_candidate}} - <span class="voice{{$i}}"></span> <br>
                     <?php $i++; ?>
                 @endforeach
-               
             </div>
             <div class="col-md-12 text-center mt-2 fs-6">
     <span class="badge bg-primary">Time Closed: - Progress 0% dari 100%</span>
