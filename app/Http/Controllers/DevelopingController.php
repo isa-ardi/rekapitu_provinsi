@@ -35,10 +35,6 @@ class DevelopingController extends Controller
 
      public function action_saksi(Request $request)
      {
-         
-    
-
-
         $villagee = 3674040006;
         $images = $request->file('c1_plano')->store('c1_plano');
         $tps = Tps::where('villages_id',$villagee)->where('number',$request['tps'])->first();

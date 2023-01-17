@@ -50,7 +50,6 @@ class PublicController extends Controller
         //     $query->join('saksi', 'saksi_data.saksi_id', 'saksi.id')
         //         ->join('tps', 'tps.id', 'saksi.tps_id')
         //         ->where('tps.sample', '1');
-            
         // }])->get();
         $data['tps_selesai'] = Tps::where('setup', 'terisi')->count();
         $data['tps_belum'] = Tps::count();

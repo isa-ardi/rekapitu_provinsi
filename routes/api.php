@@ -36,7 +36,11 @@ Route::group(['prefix'=>'public'],function (){
     Route::get('get-village',[PublicController::class,'getVillageByDistrictId']);
      Route::get('get-voice',[PublicController::class,'getSuara']);
      Route::get('get-fraud',[PublicController::class,'getFraud']);
+     Route::get('get-voice-to-center',[PublicController::class,'voiceCenter']);
 });
+
+
+
 
 //Protecting Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {

@@ -9,8 +9,9 @@ use App\Models\Tps;
 use App\Models\Village;
 use Illuminate\Http\Request;
 use App\Models\Paslon;
-use App\Models\Config;
-
+use App\Models\Config; 
+use Illuminate\Support\Facades\Cache;
+use GuzzleHttp;
 class PublicController extends Controller
 {
     public function getRegencies()
@@ -78,7 +79,7 @@ class PublicController extends Controller
         return response()->json($data,200);
 }
 
-public function getFraud(Request $request)
+    public function getFraud(Request $request)
     {
         $count_kecurangan  =\App\Models\Tps::join('saksi', 'saksi.tps_id', '=', 'tps.id')
         ->join('users', 'users.tps_id', '=', 'tps.id')
@@ -89,5 +90,42 @@ public function getFraud(Request $request)
         return response()->json([
             'fraud_total' => $count_kecurangan
         ],200);
+    }
+    public function voiceCenter()
+    {
+     
+    
+    $config = Config::first();
+    $kotas =  Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')
+        ->where('regencies.province_id', $config->provinces_id)
+        ->get();
+    
+    $client = new GuzzleHttp\Client();
+    $dataApi = [];
+    $i = 0;
+    foreach ($kotas as $hehe) : 
+        $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
+        $voices = Cache::get($url, function () use ($client, $url) {
+            $response = $client->request('GET', $url, ['verify' => false]);
+            $voices = json_decode($response->getBody());
+            Cache::put($url, $voices, 60);
+            return $voices;
+        });
+      $dataApi[] = $voices;
+    endforeach;
+
+    foreach($dataApi as $i => $voice){
+        $dataSend['paslon'] = $voice[0]->candidate;
+        $dataSend['color'] = $voice[0]->color;
+        $dataSend['voice'] = 0;
+        foreach($voice as $j => $vcs){
+          $dataSend['voice'] += $vcs->voice;
+        }
+    }   
+    dump($dataSend);
+
+
+    // return response()->json($dataApi,200);
+    
     }
 }
