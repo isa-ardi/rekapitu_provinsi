@@ -59,7 +59,7 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
       <th scope="col">Wilayah</th>
 
       @foreach ($paslon as $pas)
-      <th scope="col">{{$pas->name}}</th>
+        <th scope="col">{{$pas->candidate}}</th>
       @endforeach
     </tr>
   </thead>
