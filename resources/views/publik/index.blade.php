@@ -110,7 +110,10 @@ endforeach ?>
 
 
 <script>
+
 window.onload = function() {
+
+    
         $.ajax({
             url:"{{url('')}}/get-api-masuk",
             type:'get',
@@ -119,6 +122,8 @@ window.onload = function() {
                 $('#data-kota').html(res)
             }
         });
+
+
     }
 </script>
 @endsection
