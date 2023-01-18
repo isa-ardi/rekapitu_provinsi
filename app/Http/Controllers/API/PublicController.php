@@ -114,18 +114,18 @@ class PublicController extends Controller
       $dataApi[] = $voices;
     endforeach;
 
-    foreach($dataApi as $i => $voice){
-        $dataSend['paslon'] = $voice[0]->candidate;
-        $dataSend['color'] = $voice[0]->color;
-        $dataSend['voice'] = 0;
-        foreach($voice as $j => $vcs){
-          $dataSend['voice'] += $vcs->voice;
+    $paslon = Paslon::get();
+
+    foreach($paslon as $j => $pas){
+        $dataSend[$j]['voice'] = 0;
+        foreach($dataApi as $i => $voice){
+            $dataSend[$j]['paslon'] = $voice[$j]->candidate;
+            $dataSend[$j]['color'] = $voice[$j]->color;
+            $dataSend[$j]['voice'] += $voice[$j]->voice;
+
         }
-    }   
-    dump($dataSend);
-
-
-    // return response()->json($dataApi,200);
+    }
+    return response()->json($dataSend,200);
     
     }
 }
