@@ -14,9 +14,9 @@ foreach ($kotas as $hehe) :
     $voices = Cache::get($url, function () use ($client, $url) {
         $response = $client->request('GET', $url, [
             'headers' => [
-                                            'Authorization' => 'Bearer '.'123789',
-                                            'Accept' => 'application/json',
-                                        ],]);
+            'Authorization' => 'Bearer '.'123789',
+            'Accept' => 'application/json',
+        ],]);
         $voices = json_decode($response->getBody());
         Cache::put($url, $voices, 60 * 30);
         return $voices;
