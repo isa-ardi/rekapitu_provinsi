@@ -93,22 +93,24 @@ class PublicController extends Controller
     }
     public function voiceCenter()
     {
-     
-    
     $config = Config::first();
     $kotas =  Regency::join('regency_domains','regency_domains.regency_id','=','regencies.id')
         ->where('regencies.province_id', $config->provinces_id)
         ->get();
-    
     $client = new GuzzleHttp\Client();
     $dataApi = [];
     $i = 0;
     foreach ($kotas as $hehe) : 
         $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
         $voices = Cache::get($url, function () use ($client, $url) {
-            $response = $client->request('GET', $url, ['verify' => false]);
+            $response = $client->request('GET', $url, [
+                'headers' => [
+                    'Authorization' => 'Bearer '.'123789',
+                    'Accept' => 'application/json',
+                ],
+            ]);
             $voices = json_decode($response->getBody());
-            Cache::put($url, $voices, 60);
+            Cache::put($url, $voices, 60 * 30);
             return $voices;
         });
       $dataApi[] = $voices;

@@ -17,7 +17,10 @@
                                  
                                     $url = "https://".$hehe->domain."/api/public/get-tps";
                                     $response = $client->request('GET', $url, [
-                                        'verify'  => false,
+                                       'headers' => [
+                                            'Authorization' => 'Bearer '.'123789',
+                                            'Accept' => 'application/json',
+                                        ],
                                     ]);
                                     $voices = json_decode($response->getBody());
                                  
@@ -48,7 +51,10 @@
                                  
                                     $url = "https://".$hehe->domain."/api/public/get-tps-masuk";
                                     $response = $client->request('GET', $url, [
-                                        'verify'  => false,
+                                       'headers' => [
+                                            'Authorization' => 'Bearer '.'123789',
+                                            'Accept' => 'application/json',
+                                        ],
                                     ]);
                                     $voices = json_decode($response->getBody());
                            
@@ -79,7 +85,10 @@
                               
                                     $url = "https://".$hehe->domain."/api/public/get-tps-kosong";
                                     $response = $client->request('GET', $url, [
-                                        'verify'  => false,
+                                      'headers' => [
+                                            'Authorization' => 'Bearer '.'123789',
+                                            'Accept' => 'application/json',
+                                        ],
                                     ]);
                                     $voices = json_decode($response->getBody());
                                  
@@ -109,7 +118,10 @@
 
                                     $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
                                     $response = $client->request('GET', $url, [
-                                        'verify'  => false,
+                                        'headers' => [
+                                            'Authorization' => 'Bearer '.'123789',
+                                            'Accept' => 'application/json',
+                                        ],
                                     ]);
                                     $voices = json_decode($response->getBody());
                                  
@@ -140,7 +152,10 @@
                                     $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_terverifikasi";
                                     // $url = "https://".'pandeglang.pilpres.banten.rekapitung.id'."/api/public/get-voice?jenis=suara_terverifikasi";
                                     $response = $client->request('GET', $url, [
-                                        'verify'  => false,
+                                        'headers' => [
+                                            'Authorization' => 'Bearer '.'123789',
+                                            'Accept' => 'application/json',
+                                        ],
                                     ]);
                                     $voices = json_decode($response->getBody());
                                  
