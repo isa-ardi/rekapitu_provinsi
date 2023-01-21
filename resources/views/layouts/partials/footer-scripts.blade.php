@@ -102,38 +102,42 @@ use App\Models\User;
   
 
 <?php
-   $i = 1;
-   $paslonApi = [];
-   foreach($ApiMasuk as $past){
-    $voice = 0;
-    for($j = 0;$j<count($past); $j++){
-        $paslonApi['namaPas'.$j] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
-        $voice  += $past[$j]->voice;
-        $paslonApi['color'.$j] = $past[$j]->color;
-        $paslonApi['voice'.$j] =   $voice;
-    }
-    $i++;
-    $voice = 0;
-    }
+ 
+ $i = 1;
+$paslonApi = [];
+foreach($ApiMasuk as $past){
+   $voice = 0;
+   for($j = 0;$j<count($past); $j++){
+       $paslonApi[$j]['namaPas'] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
+       $paslonApi[$j]['color'] = $past[$j]->color;
+       $paslonApi[$j]['voice'] = 0;
+       $paslonApi[$j]['voice'] += $past[$j]->voice;
+   }
+   $i++;
+}
 
 ?>
-            <?php $i = 0; ?>
-@foreach ($paslon as $pas)
-    $('span.voice<?=$i?>').html('<?=$paslonApi['voice'.$i]?>');
-    <?php $i++; ?>
-    @endforeach
-    
+<?php $i = 0; ?>
+
+
+
+
+
+
+
     var chart = c3.generate({
       bindto: '#chart-all', // id of chart wrapper
       data: {
           columns: [
             
-            <?php $i = 0; ?>
-            @foreach ($paslon as $pas)
+            <?php $i = 1; ?>
+            <?php $j = 0; ?>
+            @foreach ($useApiMasuk as $pas)
             // each columns data
-              ['data{{$i}}', <?=$paslonApi['voice'.$i]?>],
+              ['data{{$j}}',{{$pas['voice']}}],
           
               <?php $i++; ?>
+              <?php $j++; ?>
               @endforeach
     
               
@@ -141,9 +145,9 @@ use App\Models\User;
           type: 'pie', // default type of chart
           colors: {
             <?php $i = 0; ?>
-            @foreach ($paslon as $pas)
+            @foreach ($useApiMasuk as $pas)
 
-              'data{{$i}}': " <?=$paslonApi['color'.$i]?>",
+              'data{{$i}}': " <?=  $pas['color']?>",
              
                <?php $i++; ?>
                @endforeach
@@ -152,9 +156,9 @@ use App\Models\User;
           names: {
               // name of each serie
               <?php $i = 0; ?>
-            @foreach ($paslon as $pas)
+            @foreach ($useApiMasuk as $pas)
 
-              'data{{$i}}': " <?=$paslonApi['namaPas'.$i]?>",
+              'data{{$i}}': " <?=  $pas['paslon']?>",
           
                <?php $i++; ?>
                @endforeach
@@ -169,6 +173,18 @@ use App\Models\User;
           top: 0
       },
     });
+
+    
+            <?php $i = 1; ?>
+            <?php $j = 0; ?>
+    @foreach ($useApiMasuk as $pas)
+        $('.number-font-voice<?=$j?>').html(<?=$pas['voice']?>);
+        <?php $i++; ?>
+        <?php $j++; ?>
+    @endforeach
+
+
+
 
     <?php
    $i = 1;
@@ -188,19 +204,21 @@ use App\Models\User;
 ?>
 
 <?php $i = 0; ?>
-@foreach ($paslon as $pas)
-    $('span.voice<?=$i?>').html('<?=$paslonApi['voice'.$i]?>');
+@foreach ($useApiVerif as $pas)
+    $('.number-font-voice-verif<?=$i?>').html('<?=$pas['voice']?>');
     <?php $i++; ?>
     @endforeach
+
+
     var chart = c3.generate({
       bindto: '#chart-donut', // id of chart wrapper
       data: {
           columns: [
             
             <?php $i = 0; ?>
-            @foreach ($paslon as $pas)
+            @foreach ($useApiVerif as $pas)
             // each columns data
-              ['data{{$i}}', <?=$paslonApi['voice'.$i]?>],
+              ['data{{$i}}', <?=$pas['voice']?>],
           
               <?php $i++; ?>
               @endforeach
@@ -210,9 +228,9 @@ use App\Models\User;
           type: 'pie', // default type of chart
           colors: {
             <?php $i = 0; ?>
-            @foreach ($paslon as $pas)
+            @foreach ($useApiVerif as $pas)
 
-              'data{{$i}}': " <?=$paslonApi['color'.$i]?>",
+              'data{{$i}}': " <?=$pas['color']?>",
              
                <?php $i++; ?>
                @endforeach
@@ -221,9 +239,9 @@ use App\Models\User;
           names: {
               // name of each serie
               <?php $i = 0; ?>
-            @foreach ($paslon as $pas)
+            @foreach ($useApiVerif as $pas)
 
-              'data{{$i}}': " <?=$paslonApi['namaPas'.$i]?>",
+              'data{{$i}}': " <?=$pas['paslon']?>",
           
                <?php $i++; ?>
                @endforeach

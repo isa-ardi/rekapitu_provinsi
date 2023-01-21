@@ -118,8 +118,8 @@ $coba = json_encode($dataApi);
      let arr =   JSON.parse('<?=$coba?>')
 
      let paslon1 = 0;
-  let paslon2 = 0;
-  let paslon3 = 0;
+    let paslon2 = 0;
+    let paslon3 = 0;
 
 for(let items of arr){
   
@@ -145,7 +145,6 @@ for(let items of arr){
   
 }
 
-console.log(paslon1)
 
 
 

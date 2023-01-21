@@ -36,6 +36,8 @@ use Illuminate\Support\Facades\Cache;
     $client = new GuzzleHttp\Client(); //GuzzleHttp\Client
     $ApiMasuk = [];
     $ApiVerif = [];
+    $ApiMasuk2 = [];
+    $ApiVerif2 = [];
 
     foreach ($kotas as $hehe) :  
         $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
@@ -54,21 +56,50 @@ use Illuminate\Support\Facades\Cache;
 
        
         array_push($ApiMasuk,$voices);
+        $ApiMasuk2[] = $voices;
 
         $url = "https://".$hehe->domain."/api/public/get-voice?jenis=terverifikasi";
-        $voices = Cache::get($url, function () use ($client, $url) {
+        $voices2 = Cache::get($url, function () use ($client, $url) {
                 $response = $client->request('GET', $url, [
                     'headers' => [
                                             'Authorization' => 'Bearer '.'123789',
                                             'Accept' => 'application/json',
                                         ],
                 ]);
-                $voices = json_decode($response->getBody());
-                Cache::put($url, $voices, 60);
-                return $voices;
+                $voices2 = json_decode($response->getBody());
+                Cache::put($url, $voices2, 60);
+                return $voices2;
             });
-        array_push($ApiVerif,$voices);
+        array_push($ApiVerif,$voices2);
+        $ApiVerif2[] = $voices2;
+
     endforeach;
+  
+     $paslon = App\Models\Paslon::get();
+
+
+    foreach($paslon as $j => $pas){
+        $useApiMasuk[$j]['voice'] = 0;
+        foreach($ApiMasuk2 as $i => $voice){
+        
+            $useApiMasuk[$j]['paslon'] = $voice[$j]->candidate;
+            $useApiMasuk[$j]['color'] = $voice[$j]->color;
+            $useApiMasuk[$j]['voice'] += $voice[$j]->voice;
+
+        }
+    }
+    foreach($paslon as $k => $pas){
+        $useApiVerif[$k]['voice'] = 0;
+        foreach($ApiVerif2 as $i => $voice){
+          
+            $useApiVerif[$k]['paslon'] = $voice[$k]->candidate;
+            $useApiVerif[$k]['color'] = $voice[$k]->color;
+            $useApiVerif[$k]['voice'] += $voice[$k]->voice;
+
+        }
+    }
+
+
 ?>
 <style>
     .open-desktop {
@@ -211,7 +242,7 @@ use Illuminate\Support\Facades\Cache;
                                                 <h6 class="">{{$pas->candidate}} </h6>
                                                 <h6 class="">{{$pas->deputy_candidate}} </h6>
                                               
-                                                <h3 class="mb-2 number-font">{{$paslonApi['voice'.$i]}} suara</h3>
+                                                <h3 class="mb-2 number-font number-font-voice{{$i}}">{{$paslonApi['voice'.$i]}} suara</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -281,7 +312,7 @@ use Illuminate\Support\Facades\Cache;
                                             <h6 class="">{{$pas->candidate}} </h6>
                                                 <h6 class="">{{$pas->deputy_candidate}} </h6>
                                               
-                                                <h3 class="mb-2 number-font">{{$paslonApiVerif['voice'.$i]}} suara</h3>
+                                                <h3 class="mb-2 number-font number-font-voice-verif{{$i}}">{{$paslonApiVerif['voice'.$i]}} suara</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -395,8 +426,6 @@ endforeach ?>
         $('#body-masuk').load("{{url('administrator/get-api-masuk')}}"),
         $('#body-verif').load("{{url('administrator/get-api-verif')}}"),
         $('#body-cards').load("{{url('administrator/get-api-cards')}}")
-
-        
     );
 }, 1000);
 
