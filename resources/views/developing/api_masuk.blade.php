@@ -18,7 +18,7 @@ foreach ($kotas as $hehe) :
             'Accept' => 'application/json',
         ],]);
         $voices = json_decode($response->getBody());
-        Cache::put($url, $voices, 60);
+        Cache::put($url, $voices, 60 * 5);
         return $voices;
     });
     array_push($dataApi, $voices);

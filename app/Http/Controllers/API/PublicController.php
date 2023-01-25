@@ -110,7 +110,7 @@ class PublicController extends Controller
                 ],
             ]);
             $voices = json_decode($response->getBody());
-            Cache::put($url, $voices, 60 * 30);
+            Cache::put($url, $voices, 60 * 5);
             return $voices;
         });
       $dataApi[] = $voices;
@@ -121,7 +121,7 @@ class PublicController extends Controller
     foreach($paslon as $j => $pas){
         $dataSend[$j]['voice'] = 0;
         foreach($dataApi as $i => $voice){
-            $dataSend[$j]['paslon'] = $voice[$j]->candidate;
+            $dataSend[$j]['paslon'] = $voice[$j]->candidate.' | '. $voice[$j]->deputy_candidate;
             $dataSend[$j]['color'] = $voice[$j]->color;
             $dataSend[$j]['voice'] += $voice[$j]->voice;
 
