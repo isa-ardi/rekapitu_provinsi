@@ -25,7 +25,7 @@ foreach ($kotas as $hehe) :
 ?>
 <tr>
     <th scope="row"> 
-        <a href="https://{{$hehe->domain}}/ceksetup">
+        <a href="https://{{$hehe->domain}}/ceksetup"target="_blank">
             <?= $hehe->name  ?>
         </a>      
     </th>

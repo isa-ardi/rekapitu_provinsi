@@ -83,7 +83,7 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
             <div class="col-lg-3">
                 <div class="card text-center">
                     <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://{{$hehe->domain}}">{{ $hehe->name}}</a></div>
+                        <div class="card-title text-white"><a href="https://{{$hehe->domain}}"target="_blank">{{ $hehe->name}}</a></div>
                     </div>
                     <div class="card-body">
                         <div class="container">
