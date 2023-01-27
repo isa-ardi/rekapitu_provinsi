@@ -80,23 +80,23 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
         ?>
             <?php 
                 foreach ($kotas as $hehe) :  ?>
-            <div class="col-lg-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://{{$hehe->domain}}"target="_blank">{{ $hehe->name}}</a></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div id="chart-{{$i}}" class="chartsh h-100 w-100"></div>
+                        <div class="col-lg-3">
+                            <div class="card text-center">
+                                <div class="card-header bg-primary">
+                                    <div class="card-title text-white"><a href="https://{{$hehe->domain}}"target="_blank">{{ $hehe->name}}</a></div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="container">
+                                        <div id="chart-{{$i}}" class="chartsh h-100 w-100"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-    <?php 
+                        
+                        <?php 
 
-$i++;
-endforeach ?>
+                    $i++;
+            endforeach ?>
         </div>
     </div>
 </div>
