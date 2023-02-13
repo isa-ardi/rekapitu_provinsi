@@ -117,7 +117,7 @@ foreach($ApiMasuk as $past){
 }
 
 ?>
-<?php $i = 0; ?>
+<?php $i = 0; ?>  
 
 
 

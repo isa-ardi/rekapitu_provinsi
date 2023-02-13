@@ -176,38 +176,24 @@ use Illuminate\Support\Facades\Cache;
                             </div>
                             <div class="col me-auto">
                                 <h6 class="">Suara Tertinggi</h6>
-                                 <?php
-                                $i = 1;
-                                $paslonApi = [];
-                                foreach($ApiMasuk as $past){
-                                    $voice = 0;
-                                    for($j = 0;$j<count($past); $j++){
-                                        $paslonApi['namaPas'.$j] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
-                                        $voice  += $past[$j]->voice;
-                                        $paslonApi['color'.$j] = $past[$j]->color;
-                                        $paslonApi['voice'.$j] =  $past[$j]->voice;
-                                    }
-                                    $i++;
-                                    $voice = 0;
-                                    }
-
-                                ?>
+                             
                                 <h3 class="mb-2 number-font">   
-                                    <?php $i = 0; 
-                        ?>
-                                       @foreach ($paslon as $pas)
-                                            <?php
-                                                $dataTertinggi[] = (int) $paslonApi['voice'.$i]
-                                            ?>
-                                                 <?php  $i++ ?>
-                                       @endforeach
-                                       <?php 
-                                       usort($dataTertinggi, function($a, $b) {
-                                                return $b - $a;
-                                            });
-
-                                       ?>
-                               {{ $paslonApi['voice0']}}
+                                    <?php $i = 1; ?>
+                                        <?php $j = 0; ?>
+                                @foreach ($useApiMasuk as $pas)
+                                        <?php
+                                            $dataTertinggi[] = $pas['voice']
+                                        ?>
+                                    <?php $i++; ?>
+                                    <?php $j++; ?>
+                                @endforeach
+                                <?php
+                                usort($dataTertinggi, function($a, $b) {
+                                        return $b - $a;
+                                    });
+                                
+                                ?>
+                                {{$dataTertinggi[0]}}
                                 </h3>
                             </div>
                         </div>
