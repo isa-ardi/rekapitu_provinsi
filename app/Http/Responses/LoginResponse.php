@@ -20,20 +20,20 @@ class LoginResponse implements LoginResponseContract
             return redirect('c1-banding');
         }
 
-        if($request->commander ==null){
+        // if($request->commander ==null){
 
-            if(auth()->user()->role_id == 1 && (int) $request->acakey == 111111){
-                    return redirect('redirect');
-            }
+        //     if(auth()->user()->role_id == 1 && (int) $request->acakey == 111111){
+        //             return redirect('redirect');
+        //     }
 
-            $acaKey =  Acakey::where('user_id',auth()->user()->id)->where('kode',$request->acakey)->first();
-                if($acaKey==null){
-                    Auth::logout(); 
-                    return redirect()->back()->with('error','Kode Aca yang anda masukan salah');
-                }
-                Acakey::where('kode',$request->acakey)->delete();
+        //     $acaKey =  Acakey::where('user_id',auth()->user()->id)->where('kode',$request->acakey)->first();
+        //         if($acaKey==null){
+        //             Auth::logout(); 
+        //             return redirect()->back()->with('error','Kode Aca yang anda masukan salah');
+        //         }
+        //         Acakey::where('kode',$request->acakey)->delete();
     
-         }
+        //  }
 
 
         if($request->commander !=null){
