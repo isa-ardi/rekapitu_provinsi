@@ -207,7 +207,7 @@ use Illuminate\Support\Facades\Cache;
                                             });
 
                                        ?>
-                               {{$dataTertinggi[0]}}
+                               {{ $paslonApi['voice0']}}
                                 </h3>
                             </div>
                         </div>
