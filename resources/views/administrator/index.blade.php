@@ -176,10 +176,22 @@ use Illuminate\Support\Facades\Cache;
                             </div>
                             <div class="col me-auto">
                                 <h6 class="">Suara Tertinggi</h6>
-                                <h3 class="mb-2 number-font">
-                                    NA/N
-                                    <!--{{$paslon_tertinggi['candidate']}} /-->
-                                    <!--{{$paslon_tertinggi['deputy_candidate']}}-->
+                                <h3 class="mb-2 number-font">   
+                                    <?php $i = 0; 
+                        ?>
+                                       @foreach ($paslon as $pas)
+                                            <?php
+                                                $dataTertinggi[] = (int) $paslonApi['voice'.$i]
+                                            ?>
+                                                 <?php  $i++ ?>
+                                       @endforeach
+                                       <?php 
+                                       usort($dataTertinggi, function($a, $b) {
+                                                return $b - $a;
+                                            });
+
+                                       ?>
+                               {{$dataTertinggi[0]}}
                                 </h3>
                             </div>
                         </div>

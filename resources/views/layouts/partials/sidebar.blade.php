@@ -24,7 +24,7 @@ $tps = 2963;
     <div class="page-main">
         <!--APP-SIDEBAR-->
         <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
-        <aside class="app-sidebar">
+        <aside class="app-sidebar"style="overflow-y:scroll">
             <div class="side-header">
                 <a class="header-brand1" href="{{url('')}}/administrator/index">
 
