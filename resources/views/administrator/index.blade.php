@@ -189,7 +189,6 @@ use Illuminate\Support\Facades\Cache;
                             </div>
                             <div class="col me-auto">
                                 <h6 class="">Suara Tertinggi</h6>
-                             
                                 <h3 class="mb-2 number-font">   
                                {{$dataTertinggi[0]['voice']}} 
                                     || {{$dataTertinggi[0]['paslon']}}
@@ -357,7 +356,7 @@ use Illuminate\Support\Facades\Cache;
             <div class="col-lg-3">
                 <div class="card text-center">
                     <div class="card-header bg-primary">
-                        <div class="card-title text-white"><a href="https://{{$hehe->domain}}">{{ $hehe->name}}</a></div>
+                        <div class="card-title text-white"><a href="https://{{ $hehe->domain}}">{{ $hehe->name}}</a></div>
                     </div>
                     <div class="card-body">
                         <div class="container">

@@ -12,7 +12,7 @@ $config = App\Models\Config::first();
 ?>
 <div class="card">
     <div class="card-header">
-        <div class="card-title">Super Features (Provinsi Banten)</div>
+        <div class="card-title">Tabulasi (Provinsi Banten)</div>
     </div>
     <div class="card-body">
         <div class="row">
