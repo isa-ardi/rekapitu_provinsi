@@ -85,7 +85,7 @@ use Illuminate\Support\Facades\Cache;
             $useApiMasuk[$j]['paslon'] = $voice[$j]->candidate;
             $useApiMasuk[$j]['color'] = $voice[$j]->color;
             $useApiMasuk[$j]['voice'] += $voice[$j]->voice;
-            $useApiMasuk[$j]['urutan'] = $i;
+            $useApiMasuk[$j]['urutan'] = $j;
 
         }
     }
@@ -96,7 +96,7 @@ use Illuminate\Support\Facades\Cache;
             $useApiVerif[$k]['paslon'] = $voice[$k]->candidate;
             $useApiVerif[$k]['color'] = $voice[$k]->color;
             $useApiVerif[$k]['voice'] += $voice[$k]->voice;
-                 $useApiMasuk[$j]['urutan'] = $i;
+                 $useApiMasuk[$j]['urutan'] = $k;
 
         }
     }
