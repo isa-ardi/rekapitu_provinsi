@@ -176,6 +176,22 @@ use Illuminate\Support\Facades\Cache;
                             </div>
                             <div class="col me-auto">
                                 <h6 class="">Suara Tertinggi</h6>
+                                 <?php
+                                $i = 1;
+                                $paslonApi = [];
+                                foreach($ApiMasuk as $past){
+                                    $voice = 0;
+                                    for($j = 0;$j<count($past); $j++){
+                                        $paslonApi['namaPas'.$j] = $past[$j]->candidate.' | '.$past[$j]->deputy_candidate;
+                                        $voice  += $past[$j]->voice;
+                                        $paslonApi['color'.$j] = $past[$j]->color;
+                                        $paslonApi['voice'.$j] =  $past[$j]->voice;
+                                    }
+                                    $i++;
+                                    $voice = 0;
+                                    }
+
+                                ?>
                                 <h3 class="mb-2 number-font">   
                                     <?php $i = 0; 
                         ?>
