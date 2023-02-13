@@ -178,22 +178,18 @@ use Illuminate\Support\Facades\Cache;
                                 <h6 class="">Suara Tertinggi</h6>
                              
                                 <h3 class="mb-2 number-font">   
-                                    <?php $i = 1; ?>
-                                        <?php $j = 0; ?>
-                                @foreach ($useApiMasuk as $pas)
-                                        <?php
-                                            $dataTertinggi[] = $pas['voice']
-                                        ?>
-                                    <?php $i++; ?>
-                                    <?php $j++; ?>
-                                @endforeach
+                                  
                                 <?php
+
+                                $dataTertinggi = $useApiMasuk;
+
                                 usort($dataTertinggi, function($a, $b) {
-                                        return $b - $a;
+                                          return $b['voice'] <=> $a['voice'];
                                     });
-                                
+                                    
                                 ?>
-                                {{$dataTertinggi[0]}}
+                                {{$dataTertinggi[0]['voice']}} 
+                                    || {{$dataTertinggi[0]['paslon']}}
                                 </h3>
                             </div>
                         </div>
