@@ -85,6 +85,7 @@ use Illuminate\Support\Facades\Cache;
             $useApiMasuk[$j]['paslon'] = $voice[$j]->candidate;
             $useApiMasuk[$j]['color'] = $voice[$j]->color;
             $useApiMasuk[$j]['voice'] += $voice[$j]->voice;
+            $useApiMasuk[$j]['urutan'] = $i;
 
         }
     }
@@ -95,6 +96,7 @@ use Illuminate\Support\Facades\Cache;
             $useApiVerif[$k]['paslon'] = $voice[$k]->candidate;
             $useApiVerif[$k]['color'] = $voice[$k]->color;
             $useApiVerif[$k]['voice'] += $voice[$k]->voice;
+                 $useApiMasuk[$j]['urutan'] = $i;
 
         }
     }
@@ -168,16 +170,6 @@ use Illuminate\Support\Facades\Cache;
                 <div class="card" style="margin-bottom: 0px;">
                     <div class="card-body">
                         <div class="row mx-auto">
-                            <div class="col-3 ">
-                                <div class="counter-icon box-shadow-secondary brround candidate-name text-white bg-danger"
-                                    style="margin-bottom: 0;">
-                                    0
-                                </div>
-                            </div>
-                            <div class="col me-auto">
-                                <h6 class="">Suara Tertinggi</h6>
-                             
-                                <h3 class="mb-2 number-font">   
                                   
                                 <?php
 
@@ -188,7 +180,18 @@ use Illuminate\Support\Facades\Cache;
                                     });
                                     
                                 ?>
-                                {{$dataTertinggi[0]['voice']}} 
+                             
+                            <div class="col-3 ">
+                                <div class="counter-icon box-shadow-secondary brround candidate-name text-white"
+                                    style="margin-bottom: 0;background-color:<?=$dataTertinggi[0]['color']?>">
+                                    <?=(int)$dataTertinggi[0]['urutan'] + 1?>
+                                </div>
+                            </div>
+                            <div class="col me-auto">
+                                <h6 class="">Suara Tertinggi</h6>
+                             
+                                <h3 class="mb-2 number-font">   
+                               {{$dataTertinggi[0]['voice']}} 
                                     || {{$dataTertinggi[0]['paslon']}}
                                 </h3>
                             </div>
