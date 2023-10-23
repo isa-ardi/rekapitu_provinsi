@@ -49,9 +49,18 @@ foreach ($kotas as $hehe) :
             <?= $hehe->name  ?>
         </a>      
     </th>
-    @foreach($voices as $vcs)
-    <td>{{$vcs->voice}}</td>
-    @endforeach
+    @if($voices == "")
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+   
+    @else
+
+        @foreach($voices as $vcs)
+        <td>{{$vcs->voice}}</td>
+        @endforeach
+
+    @endif
 </tr>
 <?php endforeach; ?>
                 
