@@ -73,7 +73,7 @@ foreach ($kotas as $hehe) :
    foreach($dataApi as $pas): 
    ?>
    var chart = c3.generate({
-        bindto: '#chart-{{$i}}', // id of chart wrapper
+        bindto: '#chart-8', // id of chart wrapper
         data: {
             columns: [
                 <?php  for($j = 0;$j<count($pas); $j++){ ?>
