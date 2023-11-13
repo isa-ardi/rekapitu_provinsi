@@ -102,7 +102,7 @@ class PublicController extends Controller
     $i = 0;
     foreach ($kotas as $hehe) : 
 
-        if ($hehe->name != "banten") {
+        if ($hehe->name != "KOTA TANGERANG SELATAN") {
             continue;
         }
 
