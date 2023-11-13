@@ -87,7 +87,7 @@ $data_masuk = (int)$saksidatai / (int)$dpt * 100;
                                 </div>
                                 <div class="card-body">
                                     <div class="container">
-                                        <div id="chart-{{$i}}" class="chartsh h-100 w-100"></div>
+                                        <div id="chart-8" class="chartsh h-100 w-100"></div>
                                     </div>
                                 </div>
                             </div>
