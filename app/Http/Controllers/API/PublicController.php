@@ -101,6 +101,11 @@ class PublicController extends Controller
     $dataApi = [];
     $i = 0;
     foreach ($kotas as $hehe) : 
+
+        if ($hehe->name != "banten") {
+            continue;
+        }
+
         $url = "https://".$hehe->domain."/api/public/get-voice?jenis=suara_masuk";
         $voices = Cache::get($url, function () use ($client, $url) {
             $response = $client->request('GET', $url, [
